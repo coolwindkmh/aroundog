@@ -4,6 +4,4 @@ import com.aroundog.model.domain.Admin;
 
 public interface AdminDAO {
 	public Admin loginCheck(Admin admin);
-	
-	
 }

@@ -29,6 +29,21 @@
          <link rel="stylesheet" href="css/animate.min.css">
          <link rel="stylesheet" href="css/owl.carousel.css">
          <link rel="stylesheet" href="css/main.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script>
+      $(function(){
+    	  $("button").click(function(){
+	    	  regist();
+    	  });	
+      });
+      function regist(){
+    	  $("form").attr({
+    		  action:"/user/adoption",
+    		  method:"post" 
+    	  });
+    	  $("form").submit();
+      }
+      </script>   
       </head>
       <body>
            <header id="header" id="home">
@@ -96,14 +111,14 @@
                   </div>
                </div>                  
                <div class="row justify-content-center">
-                  <form class="col-lg-9">
+                  <form name="regist-form" class="col-lg-9">
                     <div class="form-group">
                       <label for="first-name">전화번호</label>
-                      <input type="text" class="form-control" placeholder="연락받을 전화번호">
+                      <input type="text" class="form-control" name ="phone" placeholder="연락받을 전화번호">
                     </div>
                     <div class="form-group">
                       <label for="last-name">이메일</label>
-                      <input type="text" class="form-control" placeholder="연락받을 이메일">
+                      <input type="text" class="form-control" name="email" placeholder="연락받을 이메일">
                     </div>                    
                     <!-- <div class="form-group">
                       <label for="Address">Address</label>
@@ -114,103 +129,21 @@
                        <div class="col-6 mb-30">
                           <label for="City">주거환경</label>
                            <div class="select-option" id="service-select"">
-                           <select>
-                              <option data-display="거주형태 선택">거주형태 선택</option>
-                              <option value="1">아파트</option>
-                              <option value="2">빌라</option>
-                              <option value="3">오피스텔</option>
-                              <option value="4">원룸</option>
-                              <option value="5">단독주택(마당있음)</option>
-                              <option value="5">단독주택(마당없음)</option>
+                           <select name=envir>
+                              <option value="아파트">아파트</option>
+                              <option value="빌라">빌라</option>
+                              <option value="오피스텔">오피스텔</option>
+                              <option value="원룸">원룸</option>
+                              <option value="단독주택(마당있음)">단독주택(마당있음)</option>
+                              <option value="단독주택(마당없음)">단독주택(마당없음)</option>
                            </select>
                         </div>   
-                       </div>
-                       <div class="col-6 mb-30">
-                          <label for="state">상세형태</label>
-                           <div class="select-option" id="service-select"">
-                           <select>
-                              <option data-display="평수 선택">평수 선택</option>
-                              <option value="1">5평 미만</option>
-                              <option value="2">5-10평 미만</option>
-                              <option value="3">10-20평 미만</option>
-                              <option value="4">20-30평 미만</option>
-                              <option value="5">30-40평 미만</option>
-                              <option value="5">40평 이상</option>
-                           </select>
-                        </div>                          
                        </div>                       
-                       <!-- <div class="col-6 mb-30">
-                          <label for="Country">Country</label>
-                                                  <div class="select-option" id="service-select"">
-                                                  <select>
-                                                     <option data-display="Select Country">Select Country</option>
-                                                     <option value="1">Bangladesh</option>
-                                                     <option value="2">London</option>
-                                                     <option value="3">India</option>
-                                                     <option value="4">Nepal</option>
-                                                     <option value="5">Uganda</option>
-                                                  </select>
-                                               </div>   
-                       </div>
-                       <div class="col-6 mb-30">
-                          <label for="postal-code">Postal code</label>
-                                                  <input type="text" class="form-control" placeholder="Postal Code">                          
-                       </div>                       
-                       <div class="col-6 mb-30">
-                          <label for="email">Email Address</label>
-                                                  <input type="email" class="form-control" placeholder="Email Address">
-                       </div>
-                       <div class="col-6 mb-30">
-                          <label for="phone">Phone Number</label>
-                                                  <input type="phone" class="form-control" placeholder="Phone Number">                          
-                       </div>
-                                           </div>       -->
-
-                  <!--   <fieldset class="form-group">
-                                         <label for="day">Which days you can be volunteer?</label>
-                                                <div class="form-group ">
-                                                    <div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" name="inlinecheckbox" id="inlineRadio1" value="option1"> Monday
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" name="inlinecheckbox" id="inlineRadio2" value="option2"> Tuesday
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" name="inlinecheckbox" id="inlineRadio3" value="option3"> Wednesday
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" name="inlinecheckbox" id="inlineRadio2" value="option4"> Thursday
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" name="inlinecheckbox" id="inlineRadio2" value="option5"> Friday
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" name="inlinecheckbox" id="inlineRadio2" value="option6"> Saturday
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" name="inlinecheckbox" id="inlineRadio2" value="option6"> Sunday
-                                                        </label>
-                                                    </div>                                
-                                                </div>
-                    </fieldset> -->
                     <div class="form-group" style="width:100%" >
                       <label for="note">입양이유</label>
-                      <textarea class="form-control" id="exampleTextarea" rows="5" placeholder="입양하려는 이유와 하고싶은 말을 적어주세요"></textarea>
+                      <textarea name="content" class="form-control" id="exampleTextarea" rows="5" placeholder="입양하려는 이유와 하고싶은 말을 적어주세요"></textarea>
                     </div>                    
-                    <button type="submit" class="primary-btn float-right">보내기</button>
+                    <button class="primary-btn float-right">보내기</button>
                   </form>
                </div>
             </div>   
@@ -306,7 +239,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             </div>
          </footer>
          <!-- End footer Area -->   
-
          <script src="js/vendor/jquery-2.2.4.min.js"></script>
          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
          <script src="js/vendor/bootstrap.min.js"></script>         

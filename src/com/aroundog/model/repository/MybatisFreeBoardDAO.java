@@ -1,20 +1,20 @@
-
 package com.aroundog.model.repository;
+
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import com.aroundog.model.domain.Admin;
-
 @Repository
-public class MybatisAdminDAO implements AdminDAO{
+public class MybatisFreeBoardDAO implements FreeBoardDAO{	
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
-	//로그인 체크
-	public Admin loginCheck(Admin admin) {
-		Admin obj=sqlSessionTemplate.selectOne("Admin.login", admin);
-		return obj;
+	
+	
+	//모든 자유게시판 글 가져오기
+	public List selectAll() {
+		List freeBoardList=sqlSessionTemplate.selectList("FreeBoard.selectAll");
+		return freeBoardList;
 	}
 
 }

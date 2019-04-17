@@ -5,8 +5,10 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="com.aroundog.model.domain.Admin" alias="Admin"/>
+<!-- 		<typeAlias type="com.aroundog.model.domain.FreeBoard" alias="FreeBoard"/> -->
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/aroundog/mybatis/mapper/AdminMapper.xml" />
+<!-- 		<mapper resource="com/aroundog/mybatis/mapper/FreeBoardMapper.xml" /> -->
 	</mappers>
 </configuration>
