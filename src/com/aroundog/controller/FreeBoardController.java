@@ -15,9 +15,9 @@ public class FreeBoardController {
 	@Autowired
 	private FreeBoardService freeBoardService;
 	
-//	public String spreadList(HttpServletRequest request) {
-//		List freeBoardList=freeBoardService.selectAll();
-//		request.setAttribute("freeBoardList", freeBoardList);
-//		return "";
-//	}
+	public String selectAll(HttpServletRequest request) {
+		List freeBoardList=freeBoardService.selectAll();
+		request.setAttribute("freeBoardList", freeBoardList);
+		return "";
+	}
 }
