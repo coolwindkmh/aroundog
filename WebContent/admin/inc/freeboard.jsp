@@ -11,16 +11,16 @@
 	<table class="table table-bordered">
 		<thead>
 			<tr>
-				<th>Board_id</th>
-				<th>Member_id</th>
+				<th width="10px">Board_id</th>
+				<th width="12px">Member_id</th>
 				<th>Title</th>
 				<th>Content</th>
-				<th>Regdate</th>
-				<th>Hit</th>
-				<th>Secret</th>
-				<th>Team</th>
-				<th>Rank</th>
-				<th>Depth</th>			
+				<th width="18px">Regdate</th>
+				<th width="7px">Hit</th>
+				<th width="7px">Secret</th>
+				<th width="7px">Team</th>
+				<th width="7px">Rank</th>
+				<th width="7px">Depth</th>			
 			</tr>
 		</thead>
 		<tbody>

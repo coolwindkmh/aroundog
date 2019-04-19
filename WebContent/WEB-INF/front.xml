@@ -26,15 +26,13 @@
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 	<mvc:default-servlet-handler/>
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-		<property name="messageConverters">
-			<list>
-				
-			</list>
-		</property>
-	</bean>
 	
-	<context:component-scan base-package="com.aroundog">
+	
+	<context:component-scan base-package="com.aroundog.controller">
+		
 	</context:component-scan>
+	
+	<bean id="multipartResolver"
+      class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></bean>
 
 </beans>

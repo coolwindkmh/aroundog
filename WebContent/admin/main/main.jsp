@@ -49,48 +49,31 @@ body, html {
   height: 100%;
 }
 
-#User {background-color: red;}
+/* #User {background-color: red;}
 #Report {background-color: green;}
 #Adopt {background-color: blue;}
 #Board {background-color: orange;}
-#AdoptManager {background-color: pink;}
+#AdoptManager {background-color: pink;} */
 </style>
 </head>
 <script>
-$(function(){//시작하자마자 디폴트페이지 열어놓기위해 사용
-	document.getElementById("defaultOpen").click();
-});
-
-function openPage(pageName,elmnt,color) {
-	var i, tabcontent, tablinks;
-	tabcontent = document.getElementsByClassName("tabcontent");
-	for (i = 0; i < tabcontent.length; i++) {
-	  tabcontent[i].style.display = "none";
-	}
-	tablinks = document.getElementsByClassName("tablink");
-	for (i = 0; i < tablinks.length; i++) {
-	  tablinks[i].style.backgroundColor = "";
-	}
-	document.getElementById(pageName).style.display = "block";
-	elmnt.style.backgroundColor = color;
-}
-
+<%@ include file="/admin/inc/pagechange.jsp" %>
 
 </script>
 <body>
-
+<form>
 <div class="loginName" style="text-align:right"><%=admin.getName() %>님 로그인중</div>
-<button class="tablink" onclick="openPage('User', this, 'red')" id="defaultOpen"><i class="fas fa-user-friends" style="font-size:20px"></i>  회원관리</button> 
-<button class="tablink" onclick="openPage('Report', this, 'green')"><i class="fas fa-bullhorn" style="font-size:20px"></i>  제보관리</button>
-<button class="tablink" onclick="openPage('Adopt', this, 'blue')"><i class="far fa-edit" style="font-size:20px"></i>  입양신청관리</button>
-<button class="tablink" onclick="openPage('Board', this, 'orange')"><i class="far fa-comment-alt" 	style="font-size:20px"></i>  게시판관리</button>
-<button class="tablink" onclick="openPage('AdoptManager', this, 'pink')"><i class="fas fa-dog" style="font-size:20px"></i>  입양게시물관리</button>
-
+<button class="tablink" type="button" onclick="openPage('User', this, 'red')" id="defaultOpen"><i class="fas fa-user-friends" style="font-size:20px"></i>  회원관리</button> 
+<button class="tablink" type="button" onclick="openPage('Report', this, 'green')"><i class="fas fa-bullhorn" style="font-size:20px"></i>  제보관리</button>
+<button class="tablink" type="button" onclick="openPage('Adopt', this, 'blue')"><i class="far fa-edit" style="font-size:20px"></i>  입양신청관리</button>
+<button class="tablink" type="button"><i class="far fa-comment-alt" 	style="font-size:20px"></i>  게시판관리</button>
+<button class="tablink" type="button" onclick="openPage('AdoptManager', this, 'pink')"><i class="fas fa-dog" style="font-size:20px"></i>  입양게시물관리</button>
+</form>
 <div id="User" class="tabcontent">
-<%FreeBoard freeBoard=freeBoardList.get(0);%> 
+<%-- <%FreeBoard freeBoard=freeBoardList.get(0);%>  --%>
   <h3>회원관리</h3>
   <p>Home is where the heart is..</p>
-<div><%=freeBoard.getContent() %></div>
+<div><%-- <%=freeBoard.getContent() %> --%></div>
   
 </div>
 
