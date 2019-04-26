@@ -21,14 +21,14 @@
    <!--
 CSS
 ============================================= -->
-   <link rel="stylesheet" href="css/linearicons.css">
-   <link rel="stylesheet" href="css/font-awesome.min.css">
-   <link rel="stylesheet" href="css/bootstrap.css">
-   <link rel="stylesheet" href="css/magnific-popup.css">
-   <link rel="stylesheet" href="css/nice-select.css">                     
-   <link rel="stylesheet" href="css/animate.min.css">
-   <link rel="stylesheet" href="css/owl.carousel.css">
-   <link rel="stylesheet" href="css/main.css">
+   <link rel="stylesheet" href="/user/css/linearicons.css">
+   <link rel="stylesheet" href="/user/css/font-awesome.min.css">
+   <link rel="stylesheet" href="/user/css/bootstrap.css">
+   <link rel="stylesheet" href="/user/css/magnific-popup.css">
+   <link rel="stylesheet" href="/user/css/nice-select.css">                     
+   <link rel="stylesheet" href="/user/css/animate.min.css">
+   <link rel="stylesheet" href="/user/css/owl.carousel.css">
+   <link rel="stylesheet" href="/user/css/main.css">
 <!-- 자바스크립트 부분 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
@@ -39,16 +39,18 @@ $(function(){
    $($("input[type='button']")[1]).click(function(){//회원가입 버튼 이벤트
       regist();
    });
-   $($("input[type='button']")[2]).click(function(){//회원가입 버튼 이벤트
-      history.back();
-      //location.href="/board/list";
-   });
 });
 // 로그인 관련
 function login(){
+	 $("form").attr({
+	      method:"post",
+	      action:"/user/member/login"  
+	   });
+	   $("form").submit();
 }
 //가입하기 관련
 function regist(){
+	location.href="/user/member/regist.jsp";
 }
 </script>
 <!-- 자바스크립트 부분 -->   
@@ -123,15 +125,15 @@ function regist(){
          <form class="col-lg-9">
            <div class="form-group">
              <label for="first-name">ID</label>
-             <input type="text" class="form-control" name="id" placeholder="아이디 입력">
+             <input type="text" class="form-control" name="id" placeholder="아이디 입력" >
            </div>
            <div class="form-group">
              <label for="last-name">PASSWORD</label>
              <input type="text" class="form-control" name="pass" placeholder="비밀번호 입력">
            </div>                    
            
-            <input type="button" value="가입" class="primary-btn float-right">   
-           <input type="button" value="로그인" class="primary-btn float-right">
+            <input type="button" value="로그인" class="primary-btn float-right">   
+           <input type="button" value="가입" class="primary-btn float-right">
 
          </form>
       </div>
@@ -229,18 +231,18 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 </footer>
 <!-- End footer Area -->   
 
-      <script src="js/vendor/jquery-2.2.4.min.js"></script>
+      <script src="/user/js/vendor/jquery-2.2.4.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-      <script src="js/vendor/bootstrap.min.js"></script>         
+      <script src="/user/js/vendor/bootstrap.min.js"></script>         
       <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
-          <script src="js/easing.min.js"></script>         
-      <script src="js/hoverIntent.js"></script>
-      <script src="js/superfish.min.js"></script>   
-      <script src="js/jquery.ajaxchimp.min.js"></script>
-      <script src="js/jquery.magnific-popup.min.js"></script>   
-      <script src="js/owl.carousel.min.js"></script>                  
-      <script src="js/jquery.nice-select.min.js"></script>                     
-      <script src="js/mail-script.js"></script>   
-      <script src="js/main.js"></script>   
+          <script src="/user/js/easing.min.js"></script>         
+      <script src="/user/js/hoverIntent.js"></script>
+      <script src="/user/js/superfish.min.js"></script>   
+      <script src="/user/js/jquery.ajaxchimp.min.js"></script>
+      <script src="/user/js/jquery.magnific-popup.min.js"></script>   
+      <script src="/user/js/owl.carousel.min.js"></script>                  
+      <script src="/user/js/jquery.nice-select.min.js"></script>                     
+      <script src="/user/js/mail-script.js"></script>   
+      <script src="/user/js/main.js"></script>   
    </body>
 </html>

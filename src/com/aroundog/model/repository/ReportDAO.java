@@ -9,4 +9,7 @@ public interface ReportDAO {
    public int insert(Report report);
    public int insertImg(ReportImg reportImg);
    public List selectAll();
+   public Report select(int report_id);
+   public List selectImg(int report_id);
+   public int update(int report_id);
 }

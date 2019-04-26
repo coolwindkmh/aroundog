@@ -4,6 +4,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class Report {
    private int report_id;
+   private String title;
+
    private String content;
    private String regdate;
    private String email;
@@ -12,8 +14,15 @@ public class Report {
    private MultipartFile[] myFile;
    private double lati;
    private double longi;
-   private int member_id;
+   private String checking;
 
+   public String getTitle() {
+      return title;
+   }
+   
+   public void setTitle(String title) {
+      this.title = title;
+   }
    public MultipartFile[] getMyFile() {
       return myFile;
    }
@@ -78,11 +87,12 @@ public class Report {
       this.longi = longi;
    }
 
-   public int getMember_id() {
-      return member_id;
-   }
+public String getChecking() {
+   return checking;
+}
 
-   public void setMember_id(int member_id) {
-      this.member_id = member_id;
-   }
+public void setChecking(String checking) {
+   this.checking = checking;
+}
+   
 }

@@ -2,91 +2,87 @@
 <!DOCTYPE html>
 <html lang="zxx" class="no-js">
 <head>
-<%@ include file="/user/inc/head.jsp" %>
+<%@ include file="/user/inc/head.jsp"%>
 <script>
-//제출 기능 시작 ---------------------------
+   //제출 기능 시작 ---------------------------
+   $(function() {
+      $("input[type='button']").click(function() {
 
-$(function(){
-   $("input[type='button']").click(function(){
-      report();
-   });
-});
-function report(){
-   /*
-   alert($("form").find("textarea").val());
-   alert($("form").find("input[name='email']").val());
-   alert($("form").find("input[name='lati']").val());
-   alert($("form").find("input[name='longi']").val());
-   */
-   
-   $("form").attr({
-      method:"post",
-      action:"/user/report"
-   });
-   $("form").submit();
-}
-
-//----------------------------------제출 기능 끝
-
-// -------------------------------------------------------Google Map 관련------------------------
-
-//강아지 발견한 위치 지도에 찍기 -------------
-var map;
-function myMap() {
-   var latLng = new google.maps.LatLng(37.571066, 126.992255);
-   var mapProp = {
-      center : latLng,
-      zoom : 12
-   };
-   map = new google.maps.Map(document.getElementById("googleMap"),
-         mapProp);
-   google.maps.event.addListener(map, 'click', function(event) {
-      deleteMarker();
-      addMarker(map,event.latLng);
-   });
-   
-   google.maps.event.addListener(map, 'click', function(event){
-        //alert( "Latitude: "+event.latLng.lat()+" "+", longitude: "+event.latLng.lng() );  // <- 클릭한 위도 경도 값 확인
-        $($("form").find("input[name='lati']")).val(event.latLng.lat()); //서버에 위도 경도 넘겨주어야하니까 히든 값 설정
-        $($("form").find("input[name='longi']")).val(event.latLng.lng());
-        //alert($($("form").find("input[name='area_lati']")).val()); // 히든값 제대로 들어오는거 확인   
+         if ($("#title").val() == ""||$("#phone").val() == ""||$("#email").val() == ""||$("#content").val() == ""||$("#area").val() == "지역 선택"||markers.length==0) {
+            alert("빈칸을 채워주세요!!");
+         }else {
+            report();
+         }
       });
-}
-var markers = [];
-function addMarker(map,area){
-   var marker = new google.maps.Marker({
-      position : area,
-      icon:"/user/img/find_marker.png",
-      map:map
    });
-   markers.push(marker);
-}
-function deleteMarker(){
-   for(var i=0;i<markers.length;i++){
-      markers[i].setMap(null);
+   function report() {
+      alert("등록 되었습니다!");
+      $("form").attr({
+         method : "post",
+         action : "/user/report"
+      });
+      $("form").submit();
+
    }
-   markers = [];
-}
 
-// -------------강아지 발견한 위치 지도에 찍기 끝
+   //----------------------------------제출 기능 끝
 
-//select 바꾸면 지도 줌 바꾸기 -------------
-function areaChange(){
-   $.ajax({
-      url:"/user/map/area",
-      type:"get",
-      data:{
-         area:$("select[name='area']").val()
-      },
-      success:function(result){
-         var json = JSON.parse(result);      
-         map.setCenter(new google.maps.LatLng(json.lati,json.longi));   
+   // -------------------------------------------------------Google Map 관련------------------------
+
+   //강아지 발견한 위치 지도에 찍기 -------------
+   var map;
+   function myMap() {
+      var latLng = new google.maps.LatLng(37.571066, 126.992255);
+      var mapProp = {
+         center : latLng,
+         zoom : 12
+      };
+      map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+      google.maps.event.addListener(map, 'click', function(event) {
+         deleteMarker();
+         addMarker(map, event.latLng);
+      });
+
+      google.maps.event.addListener(map, 'click', function(event) {
+         //alert( "Latitude: "+event.latLng.lat()+" "+", longitude: "+event.latLng.lng() );  // <- 클릭한 위도 경도 값 확인
+         $($("form").find("input[name='lati']")).val(event.latLng.lat()); //서버에 위도 경도 넘겨주어야하니까 히든 값 설정
+         $($("form").find("input[name='longi']")).val(event.latLng.lng());
+         //alert($($("form").find("input[name='area_lati']")).val()); // 히든값 제대로 들어오는거 확인   
+      });
+   }
+   var markers = [];
+   function addMarker(map, area) {
+      var marker = new google.maps.Marker({
+         position : area,
+         icon : "/user/img/find_marker.png",
+         map : map
+      });
+      markers.push(marker);
+   }
+   function deleteMarker() {
+      for (var i = 0; i < markers.length; i++) {
+         markers[i].setMap(null);
       }
-   });
-}
-//-------------select 바꾸면 지도 줌 바꾸기  끝
+      markers = [];
+   }
 
+   // -------------강아지 발견한 위치 지도에 찍기 끝
 
+   //select 바꾸면 지도 줌 바꾸기 -------------
+   function areaChange() {
+      $.ajax({
+         url : "/user/map/area",
+         type : "get",
+         data : {
+            area : $("select[name='area']").val()
+         },
+         success : function(result) {
+            var json = JSON.parse(result);
+            map.setCenter(new google.maps.LatLng(json.lati, json.longi));
+         }
+      });
+   }
+   //-------------select 바꾸면 지도 줌 바꾸기  끝
 </script>
 </head>
 <body>
@@ -153,46 +149,56 @@ function areaChange(){
          </div>
          <div class="row justify-content-center">
             <form class="col-lg-9" enctype="multipart/form-data">
-               <input type="hidden" name = "member_id" value="1"/>
+               <input type="hidden" name="member_id" value="1" />
                <div class="form-group">
-                  <label for="first-name">전화번호</label> 
-                  <input type="text" name="phone"    class="form-control" placeholder="연락받을 전화번호">
+                  <label for="first-name">제목</label> <input type="text" name="title"
+                     class="form-control" placeholder="제목을 작성해주세요" id="title">
                </div>
                <div class="form-group">
-                  <label for="last-name">이메일</label> 
-                  <input type="text" name="email" class="form-control" placeholder="연락받을 이메일">
+                  <label for="first-name">전화번호</label> <input type="text"
+                     name="phone" class="form-control" placeholder="연락받을 전화번호"
+                     id="phone">
+               </div>
+
+               <div class="form-group">
+                  <label for="last-name">이메일</label> <input type="text" name="email"
+                     class="form-control" placeholder="연락받을 이메일" id="email">
                </div>
                <div class="form-row" style="display: block">
                   <div class="col-6 mb-30">
                      <label for="City">발견위치</label>
-                     <div class="select-option" id="service-select"">
-                        <select name="area"  onchange="areaChange()">
-                           <option data-display="지역 선택">지역 선택</option>
-                           <option value="서울">서울</option>
-                           <option value="경기도">경기도</option>
-                           <option value="인천">인천</option>
-                           <option value="강원도">강원도</option>
-                           <option value="부산">부산</option>
-                           <option value="광주">광주</option>
-                           <option value="대전">대전</option>
-                        </select>
+                     <div class="select-option" id="service-select">
+                           <select name="area" id="area" onchange="areaChange()" required>
+                              <option data-display="지역 선택">지역 선택</option>
+                              <option value="서울">서울</option>
+                              <option value="경기도">경기도</option>
+                              <option value="인천">인천</option>
+                              <option value="강원도">강원도</option>
+                              <option value="부산">부산</option>
+                              <option value="광주">광주</option>
+                              <option value="대전">대전</option>
+                           </select>
+                        </div>
                      </div>
                   </div>
+                  <br>
                   <!-- Google Map 관련 -->
-                  
-                  <label for="state">지도선택</label>
+
                   <div class="select-option" id="service-select">
-                        <div id="googleMap" style="width: 80%; height: 500px;"></div>
-                        <input type="hidden" name="lati" />
-                        <input type="hidden" name="longi"/>
+                     <div id="googleMap" style="width: 80%; height: 500px;"></div>
+                     <input type="hidden" name="lati" /> <input type="hidden"
+                        name="longi" />
                   </div>
+                  <hr>
                   <!-- Google Map 끝 -->
                   <div class="form-group" style="width: 100%">
                      <label for="note">상세내용</label>
-                     <textarea class="form-control" name="content"  rows="5" placeholder="제보하려는 동물에 대해서 상세한 내용을 적어주세요"></textarea>
-
-                  <input type="file" name="myFile" multiple/>      
-                  <input type="button" value="제보하기" class="primary-btn float-right"></button>
+                     <textarea class="form-control" name="content" rows="5"
+                        placeholder="제보하려는 동물에 대해서 상세한 내용을 적어주세요" id="content"></textarea>
+                     <hr>
+                     <input type="file"       name="myFile" multiple /> 
+                     <input type="button"   value="제보하기" class="primary-btn float-right" />
+                  </div>
             </form>
          </div>
       </div>
@@ -293,6 +299,6 @@ function areaChange(){
       </div>
    </footer>
    <!-- End footer Area -->
-   <%@include file="/user/inc/tail.jsp" %>
+   <%@include file="/user/inc/tail.jsp"%>
 </body>
 </html>

@@ -1,11 +1,16 @@
+<%@page import="com.aroundog.model.domain.Member"%>
+<%@page import="com.aroundog.model.domain.Adoptboard"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%
+	int adoptboard_id=Integer.parseInt(request.getParameter("adoptboard_id"));
+%>
    <!DOCTYPE html>
    <html lang="zxx" class="no-js">
    <head>
       <!-- Mobile Specific Meta -->
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <!-- Favicon-->
-      <link rel="shortcut icon" href="img/fav.png">
+      <link rel="shortcut icon" href="/user/img/fav.png">
       <!-- Author Meta -->
       <meta name="author" content="codepixer">
       <!-- Meta Description -->
@@ -21,36 +26,33 @@
          <!--
          CSS
          ============================================= -->
-         <link rel="stylesheet" href="css/linearicons.css">
-         <link rel="stylesheet" href="css/font-awesome.min.css">
-         <link rel="stylesheet" href="css/bootstrap.css">
-         <link rel="stylesheet" href="css/magnific-popup.css">
-         <link rel="stylesheet" href="css/nice-select.css">                     
-         <link rel="stylesheet" href="css/animate.min.css">
-         <link rel="stylesheet" href="css/owl.carousel.css">
-         <link rel="stylesheet" href="css/main.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-      <script>
-      $(function(){
-    	  $("button").click(function(){
-	    	  regist();
-    	  });	
-      });
-      function regist(){
-    	  $("form").attr({
-    		  action:"/user/adoption",
-    		  method:"post" 
-    	  });
-    	  $("form").submit();
-      }
-      </script>   
+         <link rel="stylesheet" href="/user/css/linearicons.css">
+         <link rel="stylesheet" href="/user/css/font-awesome.min.css">
+         <link rel="stylesheet" href="/user/css/bootstrap.css">
+         <link rel="stylesheet" href="/user/css/magnific-popup.css">
+         <link rel="stylesheet" href="/user/css/nice-select.css">                     
+         <link rel="stylesheet" href="/user/css/animate.min.css">
+         <link rel="stylesheet" href="/user/css/owl.carousel.css">
+         <link rel="stylesheet" href="/user/css/main.css">
+<!-- 자바스크립트 부분 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+function registAdoption(){
+	   $("form").attr({
+	      method:"post",
+	      action:"/user/adopt/adoption"  
+	   });
+	   $("form").submit();
+} 
+</script>    
+         
       </head>
       <body>
            <header id="header" id="home">
              <div class="container main-menu">
                 <div class="row align-items-center justify-content-between d-flex">
                   <div id="logo">
-                    <a href="index.html"><img src="img/logo.png" alt="" title="" /></a>
+                    <a href="index.html"><img src="/user/img/logo.png" alt="" title="" /></a>
                   </div>
                   <nav id="nav-menu-container">
                     <ul class="nav-menu">
@@ -111,25 +113,23 @@
                   </div>
                </div>                  
                <div class="row justify-content-center">
-                  <form name="regist-form" class="col-lg-9">
+                  <form class="col-lg-9">
+                  	<input type="hidden" name="adoptboard_id" value="<%=adoptboard_id %>">
+                  
                     <div class="form-group">
                       <label for="first-name">전화번호</label>
-                      <input type="text" class="form-control" name ="phone" placeholder="연락받을 전화번호">
+                      <input type="text" name="phone" class="form-control" placeholder="연락받을 전화번호" required>
                     </div>
                     <div class="form-group">
                       <label for="last-name">이메일</label>
-                      <input type="text" class="form-control" name="email" placeholder="연락받을 이메일">
-                    </div>                    
-                    <!-- <div class="form-group">
-                      <label for="Address">Address</label>
-                      <input type="text" class="form-control mb-20" placeholder="Your Address">
-                      <input type="text" class="form-control" placeholder="">
-                    </div>    -->                 
+                      <input type="text" name="email" class="form-control" placeholder="연락받을 이메일" required>
+                    </div>                                   
                     <div class="form-row">
                        <div class="col-6 mb-30">
                           <label for="City">주거환경</label>
                            <div class="select-option" id="service-select"">
-                           <select name=envir>
+                           <select name="envir">
+                              <option data-display="거주형태 선택">거주형태 선택</option>
                               <option value="아파트">아파트</option>
                               <option value="빌라">빌라</option>
                               <option value="오피스텔">오피스텔</option>
@@ -138,12 +138,12 @@
                               <option value="단독주택(마당없음)">단독주택(마당없음)</option>
                            </select>
                         </div>   
-                       </div>                       
+                       </div>                      
                     <div class="form-group" style="width:100%" >
                       <label for="note">입양이유</label>
-                      <textarea name="content" class="form-control" id="exampleTextarea" rows="5" placeholder="입양하려는 이유와 하고싶은 말을 적어주세요"></textarea>
+                      <textarea class="form-control" name="content" id="exampleTextarea" rows="5" placeholder="입양하려는 이유와 하고싶은 말을 적어주세요"></textarea>
                     </div>                    
-                    <button class="primary-btn float-right">보내기</button>
+                    <button type="button" class="primary-btn float-right" onClick="registAdoption()">보내기</button>
                   </form>
                </div>
             </div>   
@@ -239,18 +239,19 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             </div>
          </footer>
          <!-- End footer Area -->   
-         <script src="js/vendor/jquery-2.2.4.min.js"></script>
+
+         <script src="/user/js/vendor/jquery-2.2.4.min.js"></script>
          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-         <script src="js/vendor/bootstrap.min.js"></script>         
+         <script src="/user/js/vendor/bootstrap.min.js"></script>         
          <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
-           <script src="js/easing.min.js"></script>         
-         <script src="js/hoverIntent.js"></script>
-         <script src="js/superfish.min.js"></script>   
-         <script src="js/jquery.ajaxchimp.min.js"></script>
-         <script src="js/jquery.magnific-popup.min.js"></script>   
-         <script src="js/owl.carousel.min.js"></script>                  
-         <script src="js/jquery.nice-select.min.js"></script>                     
-         <script src="js/mail-script.js"></script>   
-         <script src="js/main.js"></script>   
+           <script src="/user/js/easing.min.js"></script>         
+         <script src="/user/js/hoverIntent.js"></script>
+         <script src="/user/js/superfish.min.js"></script>   
+         <script src="/user/js/jquery.ajaxchimp.min.js"></script>
+         <script src="/user/js/jquery.magnific-popup.min.js"></script>   
+         <script src="/user/js/owl.carousel.min.js"></script>                  
+         <script src="/user/js/jquery.nice-select.min.js"></script>                     
+         <script src="/user/js/mail-script.js"></script>   
+         <script src="/user/js/main.js"></script>   
       </body>
    </html>

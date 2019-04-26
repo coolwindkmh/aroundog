@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FreeComment">
+
+	<sql id="sql_select">
+		select freecomment_id,freeboard_id,member_id,content,regdate,team,depth from freecomment
+	</sql>
+	<select id="selectAll"  resultType="FreeComment">
+		<include refid="sql_select"/> order by freecomment_id desc
+	</select>
+
+	
+	
+	
+	<insert id="insert" parameterType="FreeComment">
+		insert into freecomment(freecomment_id,freeboard_id,member_id,content,team,depth)
+		values(seq_freecomment.nextval,#{freeboard_id},#{member_id},#{content},seq_freeteam.nextval,#{depth})
+	</insert>
+	
+	<insert id="commentAdd" parameterType="FreeComment">
+		insert into freecomment(freecomment_id,freeboard_id,member_id,content,team,depth)
+		values(seq_freecomment.nextval,#{freeboard_id},#{member_id},#{content},#{team},#{depth})
+	</insert>
+
+</mapper>
