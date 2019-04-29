@@ -153,6 +153,20 @@ public class FreeBoardController {
 		freeBoardService.update(freeboard);
 		return "redirect:/user/freeboard/detail/regist/"+freeboard_id;//리스트로 이동
 	}
+	
+	//검색하기
+	@RequestMapping(value="/user/freeboard/search", method=RequestMethod.GET)
+	public String freeBoardSearch(String category,String searchWord) {
+		System.out.println("서치 들어오니??");
+		System.out.println(category);
+		System.out.println(searchWord);
+		if(category.equals("writer")) {
+			freeBoardService.selectByWriter(searchWord);
+		}else {		
+			freeBoardService.selectByTitle(searchWord);
+		}
+		return "";//리스트로 이동
+	}
 
 	 
 	

@@ -33,12 +33,13 @@
 		values(seq_freeboard.nextval,#{member_id},	#{title},#{content},#{secret},#{category})
 	</insert>
 	
-	<select id="searchByWriter" parameterType="FreeBoard">
-		<include refid="sql_select"/> where                                 order by freeboard_id desc
+	<select id="selectByWriter" parameterType="String" resultType="FreeBoard">
+		<include refid="sql_select"/> where (title like '%#{searchWord}') or (title like '%#{searchWord}%') or (title like '#{searchWord}%') 
+		order by freeboard_id desc
 	</select>
 	
-	<select id="searchByTitle" parameterType="String" resultType="FreeBoard">
-		<include refid="sql_select"/> where (title like '%#{search}') or (title like '%#{search}%') or (title like '#{search}%') 
+	<select id="selectByTitle" parameterType="String" resultType="FreeBoard">
+		<include refid="sql_select"/> where (title like '%#{searchWord}') or (title like '%#{searchWord}%') or (title like '#{searchWord}%') 
 		order by freeboard_id desc
 	</select>
 
