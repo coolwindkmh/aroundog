@@ -1,5 +1,5 @@
-<%@page import="com.aroundog.model.domain.Adoptboard"%>
 <%@page import="java.util.List"%>
+<%@page import="com.aroundog.model.domain.Adoptboard"%>
 <%@page import="com.aroundog.model.domain.Admin"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%
@@ -45,23 +45,11 @@ input[type=button]:hover {
 <script>
 <%@ include file="/admin/inc/pagechange.jsp" %>
 
-function goDetail(adoptboard_id){ //페이지 이동
+function goDetail(adoptboard_id){ //상세보기 이동
 	location.href="/admin/adoptmanager/detail?adoptboard_id="+adoptboard_id;
-	
-	/* $("form").attr({
-		type:"get",
-		action:"/admin/adoptmanager/detail?adoptboard_id="+adoptboard_id
-	});
-	$("form").submit(); */
 }
-function goRegist(){
-	location.href="/admin/adoptmanager/type";
-	
-	/* $("form").attr({
-		type:"get",
-		action:"/admin/adoptmanager/type"
-	});
-	$("form").submit(); */
+function goRegist(){ //페이지 이동
+	location.href="/admin/adoptmanager/type"; 
 }
 </script>
 </head>
@@ -89,9 +77,6 @@ function goRegist(){
   <%for(int i=0;i<adoptboardList.size();i++){ %>
   <%Adoptboard adoptboard=adoptboardList.get(i); %>
   <%int num=adoptboardList.size(); %>
-<%--   <form>
-  	  <input type="hidden" name="adoptboard_id" value="<%=adoptboard.getAdoptboard_id()%>"/>
-  </form> --%>  
 	  <tr>
 	  	<td><%=adoptboard.getAdoptboard_id() %></td>
 	    <td><%=adoptboard.getAdoptdog().getType().getInfo() %></td>
@@ -102,8 +87,8 @@ function goRegist(){
 	  </tr>
   <%} %>
   
-	  <tr colspan="5">
-	    <td><input type="button" value="글 쓰기" onClick="goRegist()"/></td>
+	  <tr >
+	    <td colspan="5"><input type="button" value="글 쓰기" onClick="goRegist()"/></td>
 	  </tr>
 	  
 </table> 

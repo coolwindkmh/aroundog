@@ -30,7 +30,7 @@
 			<%if(member==null){ %>	
             	<li><a href="/user/login/login.jsp">Login</a></li>
             <%}else{ %>
-            	<li><a href="/user/login/login.jsp">Logout</a></li>
+            	<li><a href="/user/member/logout">Logout</a></li>
             	<li><a href="">Report</a></li>
             <%} %>
             	<li><a href="/user/member/regist.jsp">Join us</a></li>
