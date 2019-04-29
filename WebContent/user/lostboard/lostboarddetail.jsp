@@ -28,6 +28,11 @@ function edit(){
 	if(!confirm("수정하시겠어요?")){
 		return;
 	}
+	$("form").attr({
+		method:"post",
+		action:"/user/lostboard/lostboarddetail/update"
+	});
+$("form").submit();
 }
 function del(){
 	if(!confirm("삭제하시겠어요?")){

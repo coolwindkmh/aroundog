@@ -44,7 +44,7 @@ public class LostBoardServiceImpl implements LostBoardService{
          result = lostBoardDAO.insertImg(lbi);
       }
       if (result == 0) {
-         throw new ReportFailException("제보 실패!!");
+         throw new ReportFailException("등록 실패!!");
       }
       
    }
@@ -89,9 +89,7 @@ public class LostBoardServiceImpl implements LostBoardService{
       for(int i=0;i<lostBoardList.size();i++) {
         LostBoard lb = (LostBoard) lostBoardList.get(i);      
         int lb_id = lb.getLostboard_id();
-        System.out.println("lb_id는"+lb_id);
         LostBoardImg lbi=selectThumb(lb_id);
-        System.out.println(lbi);
         lbi.setLostboard_id(lb_id);
         thumbList.add(lbi);
         idList.add(lb_id);
@@ -117,4 +115,32 @@ public class LostBoardServiceImpl implements LostBoardService{
 			throw new DeleteFailException("삭제 실패");
 		}
 	}
+
+	@Override
+	public void updateLostBoard(LostBoard lostBoard) throws EditFailException{
+		int result = lostBoardDAO.updateLostBoard(lostBoard);
+		if(result ==0) {
+			throw new EditFailException("수정 실패");
+		}
+	}
+
+	@Override
+	public void updateLostBoardImg(MultipartFile[] myFile, List<LostBoardImg> oriList,LostBoard lostBoard,LostBoardImg lostBoardImg, String realPath) {
+		String[] imgList = uploader.returnFilename(myFile, lostBoard, realPath);
+		//System.out.println("서비스에서 받은 오리 리스트에 이름은"+oriList.get(0).getImg());
+	      int result = 0;
+	      for(int i=0;i<imgList.length;i++) {
+	         //LostBoardImg lbi = new LostBoardImg();
+	         //String oriName = oriList.get(i).getImg();         
+	         lostBoardImg.setLostboard(lostBoard);
+	         lostBoardImg.setImg(imgList[i]);	      
+	         lostBoardDAO.updateLostBoardImg(lostBoardImg);
+	      }
+		/*
+		 * if (result == 0) { throw new ReportFailException("수정 실패!!"); }
+		 */
+		
+	}
+	
+	
 }

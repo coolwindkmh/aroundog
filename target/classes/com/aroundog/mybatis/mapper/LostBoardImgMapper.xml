@@ -16,7 +16,7 @@
       values(seq_lostboardimg.nextval,#{img},#{lostboard.lostboard_id})
    </insert>
    
-   <select id="selectImgList" resultType="LostBoardImg">
+   <select id="selectImgList" resultType="LostBoardImg" parameterType="int">
       select * from lostboardimg where lostboard_id = #{lostboard_id}
    </select>
    
@@ -34,4 +34,13 @@
    	<delete id="delete" parameterType="int"> 
 		delete from lostboardimg where lostboard_id=#{lostboard.lostboard_id}
 	</delete>
+	
+	<select id="selectAllImgById">
+		select * from lostboardimg where lostboard_id = #{lostboard_id}
+	</select>
+	
+	<update id="updateLostBoardImg" parameterType="LostBoardImg">
+		update lostboardimg set img = #{img}
+		where lostboard_id = #{lostboard.lostboard_id} and lostboardimg_id=#{lostboardimg_id}
+	</update>
 </mapper>

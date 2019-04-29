@@ -42,4 +42,8 @@
    	<delete id="delete" parameterType="int">
 		delete from lostboard where lostboard_id=#{lostboard_id}
 	</delete>
+	
+	<update id="updateLostBoard" parameterType="LostBoard">
+		update lostboard set title=#{title}, content=#{content}, startdate=#{startdate},enddate=#{enddate},lati=#{lati},longi=#{longi},type_id=#{type.type_id}
+	</update>
 </mapper>

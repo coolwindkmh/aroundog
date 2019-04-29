@@ -84,7 +84,29 @@ public class LostBoardController {
 		lostBoardService.deleteImg(lostboard_id);
 		return "redirect:/user/lostboard/lostboardlist";
 	}
-
+	
+	@RequestMapping(value="/user/lostboard/lostboarddetail/update",method=RequestMethod.POST)
+	public ModelAndView goEdit(@RequestParam("lostboard_id") int lostboard_id) {
+		ModelAndView mav = new ModelAndView("user/lostboard/edit");
+		LostBoard lostboard = lostBoardService.select(lostboard_id);		
+	    List<Type> typeList = typeService.selectAll();
+	    mav.addObject("lostboard_id",lostboard_id);
+	    mav.addObject("typeList",typeList);
+		mav.addObject("lostBoard", lostboard);
+		return mav;
+	}
+	
+	@RequestMapping(value="/user/lostboard/edit",method=RequestMethod.POST)
+	public String doEdit(LostBoard lostBoard, LostBoardImg lostBoardImg, Type type, HttpServletRequest request) {
+		lostBoard.setType(type);
+	    MultipartFile[] myFile = lostBoard.getMyFile();
+	    String realPath = request.getServletContext().getRealPath("/data");
+	    int lostboard_id = lostBoard.getLostboard_id();
+	    List<LostBoardImg> oriList = lostBoardService.selectImg(lostboard_id);
+	    lostBoardService.updateLostBoard(lostBoard);    
+	    lostBoardService.updateLostBoardImg(myFile, oriList, lostBoard, lostBoardImg,realPath);
+		return "redirect:/user/lostboard/lostboardlist";
+	}
    /*
     * @RequestMapping(value = "/lostboard/types", method = RequestMethod.GET)
     * public List selectAllType() { System.out.println("Typeø‰√ª!"); return
