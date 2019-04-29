@@ -1,18 +1,18 @@
+<%@page import="com.aroundog.model.domain.Notice"%>
 <%@page import="com.aroundog.commons.Pager"%>
-<%@page import="com.aroundog.model.domain.FreeBoard"%>
 <%@page import="java.util.List"%>
 <%@page import="com.aroundog.model.domain.Admin"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 
 <%
 	Admin admin=(Admin)request.getSession().getAttribute("admin");
-	List<FreeBoard> freeBoardList=(List)request.getAttribute("freeBoardList");
+	List<Notice> noticeList=(List)request.getAttribute("noticeList");
  	Pager pager=(Pager)request.getAttribute("pager");				
 %>
 <!DOCTYPE html>
 <html>
 <head>
-<title>게시판 관리</title>
+<title>공지사항 관리</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" 
@@ -22,70 +22,43 @@ integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zF
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <style>
 <%@ include file="/admin/inc/maincss.jsp" %>
+body{background-color: orange;}
 /* #User {background-color: red;}
 #Report {background-color: green;}
 #Adopt {background-color: blue;} */
 #Board {background-color: orange;}
 /* #AdoptManager {background-color: pink;} */
+input[type=button] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+input[type=button]:hover {
+  background-color: #45a049;
+}
 </style>
 </head>
 <script>
 <%@ include file="/admin/inc/pagechange.jsp" %>
-//자유게시판 1건 삭제
-function del(board_id){
+function goRegist(){ //페이지 이동
+	location.href="/admin/notice/registpage"; 
+}
+//공지 1건 삭제
+function del(id){
 	//alert(board_id); 실행됨
 	$.ajax({
-		url:"/admin/freeboard/del/"+board_id,
+		url:"/admin/notice/del/"+id,
 		type:"DELETE",
 		data:{
-			freeboard_id:board_id
+			notice_id:id
 		},
 		success:function(result){
-			location.href="/admin/freeboard";			
+			location.href="/admin/notice";			
 		}	
 	});
-}
-
-function changePage(Page){
-	$.ajax({
-		url:"/admin/freeboard/page",
-		type:"GET",
-		data:{
-			currentPage:Page
-		},
-		success:function(result){
-			alert(result);
-		}	
-	});
-}
-function paging(freeboardList, pager){
-	var wrapper=document.getElementsByClassName("table-responsive");
-	wrapper.innerHTML="";
-	var str="";
-	str+="<table class='table table-bordered'>";
-	str+="<thead>";
-		str+="<tr>";
-			str+="<th width='2%'>#</th>";
-			str+="<th width='2%'>Board_id</th>";
-			str+="<th width='2%'>Member_id</th>";
-			str+="<th width='10%'>Title</th>";
-			str+="<th width='25%'>Content</th>";
-			str+="<th width='10%'>Regdate</th>";
-			str+="<th width='2%'>Hit</th>";
-			str+="<th width='2%'>Secret</th>";
-			str+="<th width='2%'>Team</th>";
-			str+="<th width='2%'>Rank</th>";
-			str+="<th width='2%'>Depth</th>	";		
-			str+="<th width='2%'>삭제</th>";			
-		str+="</tr>";
-	str+="</thead>";
-	str+="<tbody>";
-	for(var i=0;i<pager.getPageSize();i++){
-
-	}
-	str+="<tbody>";
-
-	wrapper.innerHTML=str;
 }
 </script>
 <body>
@@ -109,13 +82,11 @@ function paging(freeboardList, pager){
 		<thead>
 			<tr>
 				<th width="2%">#</th>
-				<th width="2%">Board_id</th>
-				<th width="2%">Member_id</th>
+				<th width="2%">Notice_id</th>
 				<th width="10%">Title</th>
 				<th width="25%">Content</th>
 				<th width="10%">Regdate</th>
-				<th width="2%">Hit</th>
-				<th width="2%">Secret</th>		
+				<th width="2%">Hit</th>	
 				<th width="2%">삭제</th>			
 			</tr>
 		</thead>
@@ -124,50 +95,45 @@ function paging(freeboardList, pager){
 		<%int curPos=pager.getCurPos(); %>
 		<%for(int i=0;i<pager.getPageSize();i++){ %>
 		<%if(num<1)break; %>
-		<%FreeBoard freeBoard=freeBoardList.get(curPos++); %>
+		<%Notice notice=noticeList.get(curPos++); %>
 			<tr>
 				<td><%=num-- %></td>
-				<td><%=freeBoard.getFreeboard_id() %></td>
-				<td><%=freeBoard.getMember()%></td>
-				<td><%=freeBoard.getTitle() %></td>
-				<td><a href="/admin/freeboard/detail/<%=freeBoard.getFreeboard_id() %>"><%=freeBoard.getContent() %></a></td>
-				<td><%=freeBoard.getRegdate() %></td>
-				<td><%=freeBoard.getHit() %></td>
-				<td><%=freeBoard.getSecret() %></td>
-				<td><input type="button" value="삭제" onClick="del(<%=freeBoard.getFreeboard_id()%>)"/></td>
+				<td><%=notice.getNotice_id() %></td>
+				<td><%=notice.getTitle() %></td>
+				<td><a href="/admin/freeboard/detail/<%=notice.getNotice_id() %>"><%=notice.getContent() %></a></td>
+				<td><%=notice.getRegdate() %></td>
+				<td><%=notice.getHit() %></td>
+				<td><input type="button" value="삭제" onClick="del(<%=notice.getNotice_id()%>)"/></td>
 			</tr>
 		<%} %>
 			<tr>
 			<td colspan="12" align="center">
 			<%if(pager.getFirstPage()-1>0){ %>
-               <a href="/admin/freeboard?currentPage=<%=pager.getFirstPage()-1%>">◀</a>
+               <a href="/admin/notice?currentPage=<%=pager.getFirstPage()-1%>">◀</a>
             <%}else{ %>
                <a href="javascript:alert('첫번째 페이지입니다');">◀</a>
             <%} %>
             			 
 			<%for(int i=pager.getFirstPage();i<pager.getLastPage();i++){%>
 			<%if(i>pager.getTotalPage())break; %>
-			<a href="/admin/freeboard?currentPage=<%=i %>">[<%=i %>]</a>			        
+			<a href="/admin/notice?currentPage=<%=i %>">[<%=i %>]</a>			        
 			<%} %>
 				
 			<%if(pager.getLastPage()+1<pager.getTotalPage()){ %>
-               <a href="/admin/freeboard?currentPage=<%=pager.getLastPage()+1%>">▶</a>
+               <a href="/admin/notice?currentPage=<%=pager.getLastPage()+1%>">▶</a>
             <%}else{ %>
                <a href="javascript:alert('마지막 페이지입니다!');">▶</a>
             <%} %>
 			</td>
 		</tr>
+		<tr>
+	    <td colspan="7" align="right"><input type="button" value="글 쓰기" onClick="goRegist()"/></td>
+	 	</tr>
 		</tbody>
 	</table>
 	</div>
 	</form>
 </div>
-
-  
-
-
-
-
 
    
 </body>
