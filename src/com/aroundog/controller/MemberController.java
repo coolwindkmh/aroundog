@@ -83,6 +83,12 @@ public class MemberController {
 		return "redirect:/user/index.jsp";
 	}
 	
+	//멤버 로그아웃 요청
+	@RequestMapping(value="/user/member/logout", method=RequestMethod.GET)
+	public String Logout() {
+		return "redirect:/user/login/logout.jsp";
+	}
+	
 	
 	
 	//================예외처리===================

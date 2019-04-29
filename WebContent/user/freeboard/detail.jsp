@@ -106,9 +106,7 @@ function viewArea(id){
 }
 //상세보기 수정하기
 function boardEdit(freeboard_id){
-	if(!confirm("게시물을 수정하시겠습니까?")){
-		return;
-	}
+	
 	$("form[name='form-edit']").attr({
 		action:"/user/freeboard/edit/"+freeboard_id,
 		method:"GET"
@@ -273,7 +271,7 @@ function goList(){
 	                                </div>
 	                                <div class="reply-btn">
 	                                	<%if(member!=null){ %>
-										<%if(member.getMember_id()==freeboard.getMember().getMember_id()){ %>
+										<%if(member.getMember_id()==freeComment.getMember().getMember_id()){ %>
 											<input type="hidden" name="freeboard_id" value="<%=freeboard.getFreeboard_id()%>">
 	                                		<a class="btn-reply text-uppercase" onClick="commentDelByTeam(<%=freeComment.getTeam()%>)"> d e l</a>									
 	                                	<%}%>
@@ -320,7 +318,7 @@ function goList(){
 							            </div>
 							        </div>
 							        <%if(member!=null){ %>
-									<%if(member.getMember_id()==freeboard.getMember().getMember_id()){ %> 
+									<%if(member.getMember_id()==freeComment.getMember().getMember_id()){ %> 
 										<form name="form-commentId">                            
 									    <div class="reply-btn">	
 

@@ -25,7 +25,7 @@
 	</update>
 	
 	<update id="update" parameterType="FreeBoard">
-		update freeboard set title=#{title},content=#{content},category=#{category} where freeboard_id=#{freeboard_id}
+		update freeboard set title=#{title},content=#{content},category=#{category},secret=#{secret} where freeboard_id=#{freeboard_id}
 	</update>
 	
 	<insert id="insert" parameterType="FreeBoard">
@@ -33,5 +33,14 @@
 		values(seq_freeboard.nextval,#{member_id},	#{title},#{content},#{secret},#{category})
 	</insert>
 	
+	<select id="selectByWriter" parameterType="String" resultType="FreeBoard">
+		<include refid="sql_select"/> where (title like '%#{searchWord}') or (title like '%#{searchWord}%') or (title like '#{searchWord}%') 
+		order by freeboard_id desc
+	</select>
+	
+	<select id="selectByTitle" parameterType="String" resultType="FreeBoard">
+		<include refid="sql_select"/> where (title like '%#{searchWord}') or (title like '%#{searchWord}%') or (title like '#{searchWord}%') 
+		order by freeboard_id desc
+	</select>
 
 </mapper>

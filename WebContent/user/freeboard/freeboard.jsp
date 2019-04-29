@@ -52,6 +52,15 @@
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
+<script>
+function searchword(){
+	$("form").attr({
+		action:"/user/freeboard/search",
+		method:"GET"
+	});
+	$("form").submit();
+}
+</script>
 <body>
 <%@include file="/user/inc/header.jsp" %>
 	  
@@ -87,12 +96,12 @@
 											
 						<form class="search-form" action="#">
 							<div class="default-select" id="default-select"">
-								<select>
-									<option value="1">제목</option>
-									<option value="1">작성자</option>
+								<select name="category">
+									<option value="title">제목</option>
+									<option value="writer">작성자</option>
 								</select>
-		                    <input placeholder="검색어 입력" name="search" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'" >
-		                    <button type="submit"><i class="fa fa-search"></i></button>
+		                    <input placeholder="검색어 입력" name="searchWord" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'" >
+		                    <button  type="button" onClick="searchword()"><i class="fa fa-search"></i></button>
 							</div>
 		                </form>
 					</div>
