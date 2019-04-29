@@ -14,10 +14,31 @@
 <script>
    $(function(){
    $($("input[type='button']")[0]).click(function(){
-      location.href="/user/lostboard/lostboardlist";
+      	del();
    });
+   $($("input[type='button']")[1]).click(function(){
+		edit();
+	});
+   $($("input[type='button']")[2]).click(function(){
+	      location.href="/user/lostboard/lostboardlist";
+	});
+   
 });
-
+function edit(){
+	if(!confirm("수정하시겠어요?")){
+		return;
+	}
+}
+function del(){
+	if(!confirm("삭제하시겠어요?")){
+		return;
+	}
+	$("form").attr({
+			method:"post",
+			action:"/user/lostboard/lostboarddetail/delete"
+		});
+	$("form").submit();
+}
 function myMap() {
    var latLng = new google.maps.LatLng(<%=lostBoard.getLati()%>,<%=lostBoard.getLongi()%>);
    var mapProp = {
@@ -98,6 +119,7 @@ function myMap() {
          </div>
          <div class="row justify-content-center">
             <form class="col-lg-9" enctype="multipart/form-data">
+            	<input type="hidden" name="lostboard_id" value="<%=lostBoard.getLostboard_id()%>"/>
                <input type="hidden" name="member_id" value="1" />
                <div class="form-group" style="width: 100%">
                   <div contentEditable="false"><%for(int i=0;i<imgList.size();i++){ %>
@@ -132,6 +154,8 @@ function myMap() {
                   <input type="text" class="form-control" name="enddate" value="<%=lostBoard.getEnddate()%>" readonly>
                </div>
                   <br>
+                     <input type="button" value="삭제" class="primary-btn float-right"/>
+                     <input type="button" value="수정" class="primary-btn float-right"/>
                      <input type="button" value="목록으로" class="primary-btn float-right"/>
                   </div>
             </form>
