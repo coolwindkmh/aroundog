@@ -20,5 +20,6 @@ public interface LostBoardService {
    public List getKeyWordList(List lostBoardList);
    public void delete(int lostboard_id);
    public void deleteImg(int lostboard_id);
-   
+   public void updateLostBoard(LostBoard lostboard);
+   public void updateLostBoardImg(MultipartFile[] myFile,List<LostBoardImg> oriList,LostBoard lostBoard,LostBoardImg lostBoardImg, String realPath);
 }

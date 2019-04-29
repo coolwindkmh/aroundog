@@ -63,4 +63,14 @@ public class MybatisLostBoardDAO implements LostBoardDAO{
 		return sessionTemplate.delete("LostBoardImg.delete", lostboard_id);
 	}
 
+	@Override
+	public int updateLostBoard(LostBoard lostBoard) {
+		return sessionTemplate.update("LostBoard.updateLostBoard", lostBoard);
+	}
+
+	@Override
+	public int updateLostBoardImg(LostBoardImg lostBoardImg) {
+		return sessionTemplate.update("LostBoardImg.updateLostBoardImg", lostBoardImg);
+	}
+
 }
