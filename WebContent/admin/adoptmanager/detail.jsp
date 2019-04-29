@@ -59,6 +59,7 @@ $(function(){
 	$($("input[type='button']")[0]).click(function(){//수정
 		update();
 	});
+	
 	$($("input[type='button']")[1]).click(function(){//삭제
 		del();
 	});
@@ -77,15 +78,15 @@ function update(){ //수정하기
 	});
 	$("form").submit();
 }
-function del(){ //수정하기
+function del(){ //삭제
 	if(!confirm("삭제하시겠어요?")){
 		return;
 	}
 	$("form").attr({
-		method:"post",
+		method:"GET",
 		action:"/admin/adoptmanager/delete"
 	});
-	$("form").submit();
+	$("form").submit(); 
 }
 
 </script>
@@ -96,6 +97,8 @@ function del(){ //수정하기
 
 <div class="container">
   <form enctype="multipart/form-data">
+  	<input type="hidden" name="adoptboard_id" value="<%=adoptboard.getAdoptboard_id()%>"/>
+  
 		<div style="width:25%" >
 			<img src="/data/dogs/<%=adoptboard.getAdoptdog().getImg() %>" >
 			<input type="file" name="adoptdog.myFile" />
@@ -154,7 +157,7 @@ function del(){ //수정하기
 		<br/>
 		<div>
 		    <input type="button" value="수정">
-		    <input type="button" value="삭제">
+		    <input type="button" value="삭제" >
 	    	<input type="button" value="목록">
 		</div>
   </form>

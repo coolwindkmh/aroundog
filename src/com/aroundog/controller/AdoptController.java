@@ -97,9 +97,11 @@ public String insert(Adoptboard adoptboard, HttpServletRequest request) {
 // 관리자: 입양 업로드 게시글 수정 /트랜잭션 처리 함
 @RequestMapping(value="/admin/adoptmanager/update", method=RequestMethod.POST)
 public String update(Adoptboard adoptboard, HttpServletRequest request) {
-	   System.out.println("수정할 게시글 adoptboard_id:"+adoptboard.getAdoptboard_id());
+	   System.out.println("수정한 게시글 adoptboard_id:"+adoptboard.getAdoptboard_id());
 	   
-	   //파일 처리
+	   //원본 파일
+	   
+	   //수정할 파일
 	   MultipartFile myFile=adoptboard.getAdoptdog().getMyFile();
 	   String img=myFile.getOriginalFilename();
 	   
@@ -110,6 +112,7 @@ public String update(Adoptboard adoptboard, HttpServletRequest request) {
 		   uploadFile=new File(realPath+"/"+img); //업로드 될 파일의 경로!!와 이름
 		   myFile.transferTo(new File(realPath+"/"+img)); //업로드!
 		   img=fileManager.reNameByDate(uploadFile, realPath);
+		   
 		   if(img!=null) {
 			   adoptboard.getAdoptdog().setImg(img);
 			   adoptboardService.update(adoptboard);
@@ -123,10 +126,8 @@ public String update(Adoptboard adoptboard, HttpServletRequest request) {
 // 관리자: 입양 게시글 삭제 /트랜잭션 처리 함
 @RequestMapping(value="/admin/adoptmanager/delete", method=RequestMethod.GET)
 public String delete(int adoptboard_id) {
-	   System.out.println("삭제할 게시글 adoptboard_id: "+adoptboard_id);
-	   
    adoptboardService.delete(adoptboard_id);
-   return "redirect:admin/adoptboardList";
+   return "redirect:/admin/adoptboardList";
 }
    /*------------------------------------------관리자 관련(입양 신청 관련)----------------------------------------------------*/
    // 관리자: 입양요청 게시글 목록 보기
