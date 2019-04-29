@@ -95,10 +95,9 @@ function setCheck(){
 					  		<label for="City">카테고리</label>
 					   		<div class="select-option" id="service-select"">
 								<select name="category">
-									<option data-display="카테고리">카테고리</option>
+									<option value="일반" data-display="일반">일반</option>									
 									<option value="입양질문">입양질문</option>
 									<option value="제보">제보</option>
-									<option value="일반">일반</option>
 								</select>
 							</div>	
 					  	</div>

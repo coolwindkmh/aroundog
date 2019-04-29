@@ -78,7 +78,7 @@ public class LostBoardController {
       return mav;
    }
    
-	@RequestMapping(value="/user/lostboard/lostboarddetail/delete",method=RequestMethod.GET)
+	@RequestMapping(value="/user/lostboard/lostboarddetail/delete",method=RequestMethod.POST)
 	public String delete(@RequestParam("lostboard_id") int lostboard_id) {
 		lostBoardService.delete(lostboard_id);
 		lostBoardService.deleteImg(lostboard_id);
