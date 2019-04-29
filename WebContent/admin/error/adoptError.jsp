@@ -2,5 +2,7 @@
 <%
    String msg= (String)request.getAttribute("err");
 %>
+<script>
 alert(<%=msg %>);
 location.href="/admin/adoptList";
+</script>

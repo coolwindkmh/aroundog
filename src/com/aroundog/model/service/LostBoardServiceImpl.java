@@ -117,4 +117,9 @@ public class LostBoardServiceImpl implements LostBoardService{
 			throw new DeleteFailException("삭제 실패");
 		}
 	}
+	
+	@Override
+	public LostBoard selectById(int lostboard_id) {
+		return lostBoardDAO.selectById(lostboard_id);
+	}
 }

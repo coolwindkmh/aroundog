@@ -4,8 +4,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.aroundog.common.exception.DeleteFailException;
 import com.aroundog.common.file.FileManager;
 import com.aroundog.commons.Pager;
 import com.aroundog.model.domain.LostBoard;
@@ -84,10 +87,66 @@ public class LostBoardController {
 		lostBoardService.deleteImg(lostboard_id);
 		return "redirect:/user/lostboard/lostboardlist";
 	}
-
+	
    /*
     * @RequestMapping(value = "/lostboard/types", method = RequestMethod.GET)
     * public List selectAllType() { System.out.println("Type요청!"); return
     * typeService.selectAll(); }
     */
+	
+	
+	/*-----------------------------------------관리자 : 임시보호 게시판------------------------------------------------*/
+	// 관리자 : 임시보호 리스트 요청
+	@RequestMapping(value = "/admin/lostboardList", method = RequestMethod.GET)
+	public ModelAndView lostboardList() {
+		System.out.println("관리자 lostboardList 호출!!!");
+		List lostboardList= lostBoardService.selectAll();
+		
+		ModelAndView mav= new ModelAndView("admin/lostboard/index");
+		mav.addObject("lostboardList", lostboardList);
+		mav.addObject("na", "na");
+		System.out.println("lostboardList 사이즈는 "+lostboardList.size());
+		return mav;
+	}
+	
+	// 관리자 : 임시보호글 작성자 이름으로 검색
+	@RequestMapping(value="/admin/lostboardSearchId", method=RequestMethod.GET)
+	@ResponseBody
+	public String lostboardSearchId(int lostboard_id) {
+		System.out.println("관리자 lostboardSearchName 호출!!!");
+		LostBoard lostboard= lostBoardService.selectById(lostboard_id);
+		JSONObject json = new JSONObject();
+		json.put("lostboard_id", lostboard.getLostboard_id());
+		json.put("title", lostboard.getTitle());
+		json.put("content", lostboard.getContent());
+		json.put("regdate", lostboard.getRegdate());
+		json.put("startdate", lostboard.getStartdate());
+		json.put("enddate", lostboard.getEnddate());
+		json.put("hit", lostboard.getHit());
+		json.put("lati", lostboard.getLati());
+		json.put("longi", lostboard.getLongi());
+		json.put("type", lostboard.getType());
+		json.put("member", lostboard.getMember());
+		System.out.println(json.toString());
+		
+		return json.toString();
+	}
+	
+	/*---------------------------------------------예외처리-------------------------------------------------------------*/
+
+	@ExceptionHandler(DeleteFailException.class)
+	   public ModelAndView adoptboardDeleteFail(DeleteFailException e) {
+	      ModelAndView mav = new ModelAndView("user/error/adoptError");
+	      mav.addObject("err", e.getMessage());
+	      return mav;
+	   }
 }
+
+
+
+
+
+
+
+
+

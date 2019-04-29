@@ -16,4 +16,5 @@ public interface LostBoardDAO {
    public List selectAllImg();
 	public int delete(int lostboard_id);
 	public int deleteImg(int lostboard_id);
+	public LostBoard selectById(int lostboard_id);
 }
