@@ -143,4 +143,11 @@ public class LostBoardServiceImpl implements LostBoardService{
 	}
 	
 	
+
+	
+	@Override
+	public LostBoard selectById(int lostboard_id) {
+		return lostBoardDAO.selectById(lostboard_id);
+	}
+
 }

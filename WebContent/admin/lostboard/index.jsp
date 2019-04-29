@@ -3,10 +3,12 @@
 <%@page import="java.util.List"%>
 <%@page import="com.aroundog.model.domain.Admin"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
+
 <%
-   Admin admin=(Admin)request.getSession().getAttribute("admin");
-   List<LostBoard> lostboardList = (List)request.getAttribute("lostboardList");
-%>
+	Admin admin=(Admin)request.getSession().getAttribute("admin");
+	List<LostBoard> lostboardList = (List)request.getAttribute("lostboardList");
+%>  
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,9 +32,27 @@ integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zF
 <script>
 <%@ include file="/admin/inc/pagechange.jsp" %>
 
-console.log("lostboardList 사이즈는 "+lostboardList.size());
 function search(){
+   var lostboard_id=$("input[name='lostboard_id']").val();
+   alert(lostboard_id);
    
+	$.ajax({
+		url:"/admin/lostboardSearchId",
+		type:"get",
+		data:{
+			"lostboard_id":lostboard_id
+		},
+		success:function(result){
+			var json = JSON.parse(result);
+			alert("성공 데이터는"+json);
+		},
+		error:function(result){
+			alert("실패<br>"+result);
+		}
+	});
+}
+function goDetail(){
+	alert();
 }
 </script>
 <body>
@@ -51,38 +71,46 @@ function search(){
 <div class="container">
   <h2 style="color:gray">임시보호 게시글 관리</h2>
   <br>
-  <form class="form-inline" action="/action_page.php">
-  <label class="mb-2 mr-sm-2" style="color:black">이름검색:</label>
-  <input type="text" class="form-control mb-2 mr-sm-2" width="30%" placeholder="이름을 입력해주세요" name="user-name">
-  <button type="button" class="btn btn-primary mb-2" onClick="search()">검색</button>
+  <form class="form-inline" name="search-form">
+  <label class="mb-2 mr-sm-2" style="color:black">게시글 검색:</label>
+  <input type="text" class="form-control mb-2 mr-sm-2" width="30%" placeholder="게시글 번호를 입력해주세요" name="lostboard_id"/>
+  <button class="btn btn-primary mb-2" onClick="search()">검색</button>
   </form>
   
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Email</th>
-        <th>삭제하기</th>
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>작성일</th>
+        <th>전화번호</th>
+        <th>관리하기</th>
       </tr>
     </thead>
+    
+    <form name="detail-form">
     <tbody>
+    <%for(int i=0;i<lostboardList.size();i++){ %>
+    <%LostBoard lostboard = lostboardList.get(i); %> 
       <tr>
-        <td>John</td>
-        <td>Doe</td>
-        <td>john@example.com</td>
-        <td><button class="btn btn-light">삭제</button></td>
+        <td><%= lostboard.getLostboard_id()%></td>
+        <td><%= lostboard.getTitle()%></td>
+        <td><%= lostboard.getMember().getName()%></td>
+        <td><%= lostboard.getRegdate().substring(0,10)%></td>
+        <td><%= lostboard.getMember().getPhone()%></td>
+        <td><button class="btn btn-light" onClick="goDetail()">상세보기</button></td>
       </tr>
+      <%} %>
+      
     </tbody>
+    </form> 
+    
   </table>
 </div>
       
 
 </div>
-
-
-
-
    
 </body>
 </html> 

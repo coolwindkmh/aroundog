@@ -18,4 +18,6 @@ public interface LostBoardDAO {
 	public int deleteImg(int lostboard_id);
 	public int updateLostBoard(LostBoard lostBoard);
 	public int updateLostBoardImg(LostBoardImg lostBoardImg);
+	public LostBoard selectById(int lostboard_id);
+
 }
