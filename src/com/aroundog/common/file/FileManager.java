@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 //중립적이어야함..
 @Component
 public class FileManager {
+	private ReNameSercurity rs = new ReNameSercurity();
 
 	//파일명 중 확장자 추출하여 반환하는 메서드
 	public  String getExt(String path){
@@ -27,6 +28,13 @@ public class FileManager {
 			if(result==false) {
 				filename=null;
 			}
+			return filename;
+		}
+		
+		public String reNameByHash(File ori,String dir) {
+			String hash = rs.textToHash(ori.getName());
+			String filename = hash+"."+getExt(ori.getName());
+			boolean result = ori.renameTo(new File(dir+"/"+filename));      
 			return filename;
 		}
 		

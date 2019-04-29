@@ -6,7 +6,7 @@ public class Report {
    private int report_id;
    private String title;
 
-   private String content;
+private String content;
    private String regdate;
    private String email;
    private String phone;

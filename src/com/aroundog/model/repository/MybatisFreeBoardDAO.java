@@ -27,8 +27,7 @@ public class MybatisFreeBoardDAO implements FreeBoardDAO{
 	}
 	@Override
 	public int update(FreeBoard freeboard) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSessionTemplate.update("FreeBoard.update", freeboard);
 	}
 	@Override
 	public FreeBoard select(int freeboard_id) {

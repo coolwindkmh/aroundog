@@ -19,10 +19,8 @@ public class MybatisFreeCommentDAO implements FreeCommentDAO{
 		return fcList;
 	}
 
-	@Override
 	public int delete(int freecomment_id) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSessionTemplate.delete("FreeComment.delete", freecomment_id);
 	}
 
 	@Override
@@ -44,6 +42,18 @@ public class MybatisFreeCommentDAO implements FreeCommentDAO{
 
 	public int commentAdd(FreeComment freeComment) {
 		return sqlSessionTemplate.insert("FreeComment.commentAdd", freeComment);
+	}
+
+	public int deleteByFreeboardId(int freeboard_id) {
+		return sqlSessionTemplate.delete("FreeComment.deleteByFreeboardId", freeboard_id);
+	}
+
+	public int deleteByTeam(int team) {
+		return sqlSessionTemplate.delete("FreeComment.deleteByTeam",team);
+	}
+
+	public int deleteByCommentId(int freecomment_id) {
+		return sqlSessionTemplate.delete("FreeComment.deleteByCommentId",freecomment_id);
 	}
 
 }

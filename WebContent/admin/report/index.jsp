@@ -58,6 +58,7 @@
       <button class="tablink" type="button">
          <i class="fas fa-dog" style="font-size: 20px"></i> 입양게시물관리
       </button>
+      <button class="tablink" type="button"><i class="fas fa-dog" style="font-size:20px"></i>  임보게시판관리</button>
    </form>
    <div id="Report" class="tabcontent">
       <table class="table table-bordered table-sm" style="text-align: center">

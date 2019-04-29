@@ -24,10 +24,14 @@
 		update freeboard set hit = hit+1 where freeboard_id=#{freeboard_id}
 	</update>
 	
+	<update id="update" parameterType="FreeBoard">
+		update freeboard set title=#{title},content=#{content},category=#{category} where freeboard_id=#{freeboard_id}
+	</update>
 	
 	<insert id="insert" parameterType="FreeBoard">
 		insert into freeboard(freeboard_id,member_id,title,content,secret,category)
 		values(seq_freeboard.nextval,#{member_id},	#{title},#{content},#{secret},#{category})
 	</insert>
+	
 
 </mapper>

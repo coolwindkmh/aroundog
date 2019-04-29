@@ -63,19 +63,48 @@ public class AdoptController {
       @RequestMapping(value="/admin/adoptmanager/detail", method=RequestMethod.GET)
       public ModelAndView boardSelect(int adoptboard_id) {
          Adoptboard adoptboard= adoptboardService.select(adoptboard_id);
+         List typeList= typeService.selectAll();
          ModelAndView mav = new ModelAndView("admin/adoptmanager/detail");
          mav.addObject("adoptboard", adoptboard);
+         mav.addObject("typeList", typeList);
          return mav;
       }
       
    // 관리자: 입양 업로드 게시글 쓰기 /트랜잭션 처리 함
-   @RequestMapping(value="/admin/adopt/regist", method=RequestMethod.POST)
+   @RequestMapping(value="/admin/adoptmanager/regist", method=RequestMethod.POST)
    public String insert(Adoptboard adoptboard, HttpServletRequest request) {
       //파일 처리
       MultipartFile myFile=adoptboard.getAdoptdog().getMyFile();
       String img=myFile.getOriginalFilename();
+      System.out.println("가져온 img의 이름 : "+img);
+      String realPath=request.getServletContext().getRealPath("/data/dogs");
+      System.out.println("이미지가 저장될 realPath : "+realPath);
+      File uploadFile=null;
       
-      String realPath=request.getServletContext().getRealPath("/user/data/dogs");
+      try {
+         uploadFile=new File(realPath+"/"+img); //업로드 될 파일의 경로!!와 이름
+         myFile.transferTo(new File(realPath+"/"+img)); //업로드!
+         img=fileManager.reNameByDate(uploadFile, realPath);
+         System.out.println("새로변경된 파일의 이름 : "+img);
+         if(img!=null) {
+            adoptboard.getAdoptdog().setImg(img);
+            adoptboardService.insert(adoptboard);
+         }
+      } catch (IllegalStateException | IOException e) {
+         e.printStackTrace();
+      }
+      return "redirect:/admin/adoptboardList";
+   }
+
+   // 관리자: 입양 업로드 게시글 수정 /트랜잭션 처리 함
+   @RequestMapping(value="/admin/adoptmanager/update", method=RequestMethod.POST)
+   public String update(Adoptboard adoptboard, HttpServletRequest request) {
+      System.out.println("업로드한 게시글 수정하기"+adoptboard);
+      //파일 처리
+      MultipartFile myFile=adoptboard.getAdoptdog().getMyFile();
+      String img=myFile.getOriginalFilename();
+      
+      String realPath=request.getServletContext().getRealPath("data/dogs");
       File uploadFile=null;
       
       try {
@@ -84,7 +113,7 @@ public class AdoptController {
          img=fileManager.reNameByDate(uploadFile, realPath);
          if(img!=null) {
             adoptboard.getAdoptdog().setImg(img);
-            adoptboardService.insert(adoptboard);
+            adoptboardService.update(adoptboard);
          }
       } catch (IllegalStateException | IOException e) {
          e.printStackTrace();
@@ -126,10 +155,9 @@ public class AdoptController {
       adoptService.update(adopt);
       return "redirect:/admin/adoptList";
    }
-   
    /*------------------------------------------관리자 관련(type)----------------------------------------------------*/
    // 관리자: type 목록 불러오기
-   @RequestMapping(value="/admin/adopt/type", method=RequestMethod.GET)
+   @RequestMapping(value="/admin/adoptmanager/type", method=RequestMethod.GET)
    public ModelAndView typeSelectAll() {
       List typeList= typeService.selectAll();
       ModelAndView mav = new ModelAndView("admin/adoptmanager/regist");

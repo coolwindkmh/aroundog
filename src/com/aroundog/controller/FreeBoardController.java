@@ -16,8 +16,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.aroundog.commons.Pager;
 import com.aroundog.model.domain.FreeBoard;
 import com.aroundog.model.domain.FreeComment;
+import com.aroundog.model.domain.Member;
 import com.aroundog.model.service.FreeBoardService;
 import com.aroundog.model.service.FreeCommentService;
+import com.aroundog.model.service.MemberService;
 
 @Controller
 public class FreeBoardController {
@@ -26,6 +28,8 @@ public class FreeBoardController {
 	private FreeBoardService freeBoardService;
 	@Autowired
 	private FreeCommentService freeCommentService;
+	@Autowired
+	private MemberService memberService;
 	private Pager pager=new Pager();
 	
 	
@@ -36,6 +40,14 @@ public class FreeBoardController {
 		List freeboardList=freeBoardService.selectAll();
 		List fcList=freeCommentService.selectAll();
 		pager.init(request, freeboardList.size());
+		
+		for(int i=0;i<freeboardList.size();i++) {
+			FreeBoard freeBoard=(FreeBoard)freeboardList.get(i);
+			int member_id=freeBoard.getMember_id();
+			Member member=memberService.select(member_id);
+			freeBoard.setMember(member);
+		}
+		
 		mav.addObject("freeBoardList", freeboardList);
 		mav.addObject("fcList", fcList);
 		mav.addObject("pager", pager);
@@ -55,12 +67,20 @@ public class FreeBoardController {
 		List fcList = new ArrayList();
 		freeBoardService.updateHitCnt(freeboard_id);//히트카운터 올리기
 		FreeBoard freeboard=freeBoardService.select(freeboard_id);
+		//보드에 멤버 담기
+		int member_id=freeboard.getMember_id();
+		Member member=memberService.select(member_id);
+		freeboard.setMember(member);
+		
 		List allfcList=freeCommentService.selectAll();
 		
 		//내 보드에 댓글 골라내기 위하여
 		for(int i=0;i<allfcList.size();i++) {
 			FreeComment freeComment=(FreeComment)allfcList.get(i);
 			if(freeComment.getFreeboard_id()==freeboard_id) {
+				member_id=freeComment.getMember_id();
+				member=memberService.select(member_id);
+				freeComment.setMember(member);
 				fcList.add(freeComment);
 			}
 		}	
@@ -76,12 +96,20 @@ public class FreeBoardController {
 	public ModelAndView registAndDetail(@PathVariable("freeboard_id") int freeboard_id) {
 		List fcList = new ArrayList();
 		FreeBoard freeboard=freeBoardService.select(freeboard_id);
+		//보드에 멤버 담기
+		int member_id=freeboard.getMember_id();
+		Member member=memberService.select(member_id);
+		freeboard.setMember(member);
+		
 		List allfcList=freeCommentService.selectAll();
 		
 		//내 보드에 댓글 골라내기 위하여
 		for(int i=0;i<allfcList.size();i++) {
 			FreeComment freeComment=(FreeComment)allfcList.get(i);
 			if(freeComment.getFreeboard_id()==freeboard_id) {
+				member_id=freeComment.getMember_id();
+				member=memberService.select(member_id);
+				freeComment.setMember(member);
 				fcList.add(freeComment);
 			}
 		}	
@@ -95,9 +123,36 @@ public class FreeBoardController {
 	@RequestMapping(value="/user/freeboard/regist", method=RequestMethod.POST)
 	public String freeBoardRegist(FreeBoard freeboard) {
 		freeBoardService.insert(freeboard);
-		return "redirect:/user/freeboards";
+		return "redirect:/user/freeboards";//리스트로 이동
 	}
 	
+	//자유게시판 한건 삭제하기 밑에 댓글도 자 지워야함~(캐스캐이드로 한방에 지울수 있지만 지금은 포린키를 연결 안해놔서 하나하나 다해줘야함)
+	//나중에 연결하면 프리보드매퍼에서 sql cascade로 수정하면 됨
+	@RequestMapping(value="/user/freeboard/del/{freeboard_id}", method=RequestMethod.GET)
+	public String freeBoardDel(@PathVariable("freeboard_id") int freeboard_id) {
+		freeBoardService.delete(freeboard_id); //자유게시판 한건삭제
+		freeCommentService.deleteByFreeboardId(freeboard_id); //자유게시판 밑에 댓글 삭제
+		return "redirect:/user/freeboards";//리스트로 이동
+	}
+	
+	//한건 수정하기 위해 edit.jsp로 프리보드 담아서 이동
+	@RequestMapping(value="/user/freeboard/edit/{freeboard_id}", method=RequestMethod.GET)
+	public ModelAndView freeBoardEditPage(@PathVariable("freeboard_id") int freeboard_id) {
+		ModelAndView mav = new ModelAndView("user/freeboard/edit");
+		FreeBoard freeboard=freeBoardService.select(freeboard_id);
+		int member_id=freeboard.getMember_id();
+		Member member=memberService.select(member_id);
+		freeboard.setMember(member);
+		mav.addObject("freeboard", freeboard);
+		return mav;//리스트로 이동
+	}
+	//수정하기
+	@RequestMapping(value="/user/freeboard/edit", method=RequestMethod.POST)
+	public String freeBoardEdit(FreeBoard freeboard) {
+		int freeboard_id=freeboard.getFreeboard_id();
+		freeBoardService.update(freeboard);
+		return "redirect:/user/freeboard/detail/regist/"+freeboard_id;//리스트로 이동
+	}
 
 	 
 	

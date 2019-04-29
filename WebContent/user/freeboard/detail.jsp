@@ -25,6 +25,7 @@
 <title>Animal Shelter</title>
 
 <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet"> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<!--
 	CSS
 	============================================= -->
@@ -39,11 +40,22 @@
 <style>
 #listbt{
 	margin-left:992px;
+	display:inline-block:
 }
 .comment-form2{
 	display:none;
 }
-
+#img1{
+	width:70px;
+	backround-color:red;
+}
+#img2{
+	width:70px;
+	backround-color:red;
+}
+.reply-btn{
+	width:100%;
+}
 </style>
 </head>
 <script>
@@ -69,18 +81,19 @@ function createArea(){
 	
 }
 function insertComment(){
-	$("form[name='form1']").attr({
+	$("form[name='form-main']").attr({
 		action:"/user/freecomment/regist",
 		method:"POST"
 	});
-	$("form[name='form1']").submit();
+	$("form[name='form-main']").submit();
 }
-function addComment(){
-	$("form[name='form2']").attr({
+function addComment(num){
+	var str="form"+num;
+	$("form[name='"+str+"']").attr({
 		action:"/user/freecomment/add",
 		method:"POST"
 	});
-	$("form[name='form2']").submit();
+	$("form[name='"+str+"']").submit();
 }
 function viewArea(id){
 	var str="hiddenComment"+id;
@@ -91,46 +104,64 @@ function viewArea(id){
 		commentArea.style.display="none";
 	}
 }
+//상세보기 수정하기
+function boardEdit(freeboard_id){
+	if(!confirm("게시물을 수정하시겠습니까?")){
+		return;
+	}
+	$("form[name='form-edit']").attr({
+		action:"/user/freeboard/edit/"+freeboard_id,
+		method:"GET"
+	});
+	$("form[name='form-edit']").submit();
+}
+//게시물 삭제
+function boardDel(freeboard_id){
+	if(!confirm("게시물을 삭제하시겠습니까?")){
+		return;
+	}
+	//메소드 delete안써짐 모르겠음 질문 ㅠ
+	$("form[name='form-edit']").attr({
+		action:"/user/freeboard/del/"+freeboard_id,
+		method:"GET"
+	});
+	$("form[name='form-edit']").submit();
+}
+//댓글 삭제 밑에 대댓글도 함께 삭제
+function commentDelByTeam(team){
+	if(!confirm("댓글을 삭제하시겠습니까?")){
+		return;
+	}
+	$("form[name='form-team']").attr({
+		action:"/user/freecomment/del/"+team,
+		method:"GET"
+	});
+	$("form[name='form-team']").submit();
+}
+//대 댓글 삭제
+function commentDelBycommentId(freecomment_id){
+	if(!confirm("댓글을 삭제하시겠습니까?")){
+		return;
+	}
+	$("form[name='form-commentId']").attr({
+		action:"/user/freecommentreply/del/"+freecomment_id,
+		method:"GET"
+	});
+	$("form[name='form-commentId']").submit();
+}
+function goList(){
+	location.href="/user/freeboards";
+}
 </script>
 <body class="blog-page">	
-	  <header id="header" id="home">
-	    <div class="container main-menu">
-	    	<div class="row align-items-center justify-content-between d-flex">
-		      <div id="logo">
-		        <a href="index.html"><img src="/user/img/logo.png" alt="" title="" /></a>
-		      </div>
-		      <nav id="nav-menu-container">
-		        <ul class="nav-menu">
-		          <li class="menu-active"><a href="index.html">Home</a></li>
-		          <li><a href="about.html">About Us</a></li>
-		          <li><a href="cats.html">Cats</a></li>
-		          <li><a href="dogs.html">Dogs</a></li>
-		          <li><a href="volunteer.html">Volunteer</a></li>
-		          <li class="menu-has-children"><a href="">Blog</a>
-		            <ul>
-		              <li><a href="blog-home.html">Blog Home</a></li>
-		              <li><a href="blog-single.html">Blog Single</a></li>
-		            </ul>
-		          </li>						          
-		          <li><a href="contact.html">Contact</a></li>
-		          <li class="menu-has-children"><a href="">Dropdown</a>
-		            <ul>
-		              <li><a href="elements.html">Elements</a></li>	
-		              <li><a href="#">Item</a></li>
-		              <li class="menu-has-children"><a href="">Level 2</a>
-			            <ul>
-			              <li><a href="#">Item 1</a></li>
-			              <li><a href="#">Item 2</a></li>
-			            </ul>
-			          </li>	
-		            </ul>
-		          </li>				              
-		        </ul>
-		      </nav><!-- #nav-menu-container -->		    		
-	    	</div>
-	    </div>
-	  </header><!-- #header -->
-
+<%@include file="/user/inc/header.jsp" %>
+	<%int cnt=0; %>	
+	<%for(int i=0;i<fcList.size();i++){ %>
+	<%FreeComment freeComment=(FreeComment)fcList.get(i); %>
+    <%if(freeComment.getDepth()==1){ %>
+    <%cnt++; %>
+    <%} %>					
+    <%} %>
 	<!-- start banner Area -->
 	<section class="banner-area relative" id="home">	
 		<div class="overlay overlay-bg"></div>
@@ -138,7 +169,7 @@ function viewArea(id){
 			<div class="row d-flex align-items-center justify-content-center">
 				<div class="about-content col-lg-12">
 					<h1 class="text-white">
-						Blog Details Page				
+						Details Page				
 					</h1>	
 					
 				</div>	
@@ -161,10 +192,10 @@ function viewArea(id){
 						<div class="col-lg-3  col-md-3 meta-details">
 							
 							<div class="user-details row">
-								<p class="user-name col-lg-12 col-md-12 col-6"><a href="#"><%=freeboard.getFreeboard_id() %></a> <span class="lnr lnr-user"></span></p>
+								<p class="user-name col-lg-12 col-md-12 col-6"><a href="#"><%=freeboard.getMember().getName() %></a> <span class="lnr lnr-user"></span></p>
 								<p class="date col-lg-12 col-md-12 col-6"><a href="#"><%=freeboard.getRegdate() %></a> <span class="lnr lnr-calendar-full"></span></p>
 								<p class="view col-lg-12 col-md-12 col-6"><a href="#"><%=freeboard.getHit() %> Views</a> <span class="lnr lnr-eye"></span></p>
-								<p class="comments col-lg-12 col-md-12 col-6"><a href="#"><%=freeboard.getFreeboard_id() %> Comments</a> <span class="lnr lnr-bubble"></span></p>
+								<p class="comments col-lg-12 col-md-12 col-6"><a href="#"><%=cnt %> Comments</a> <span class="lnr lnr-bubble"></span></p>
 								<ul class="social-links col-lg-12 col-md-12 col-6">
 									<li><a href="#"><i class="fa fa-facebook"></i></a></li>
 									<li><a href="#"><i class="fa fa-twitter"></i></a></li>
@@ -211,7 +242,8 @@ function viewArea(id){
 					<!--  댓글 관련 반복문 필요!!~!~!~!~!~!~!~minho -->
 					<div class="comments-area">
 					<!-- 여긴 프리커맨트 사이즈 넣어야함 -->
-						<h4>05 Comments</h4>
+											
+						<h4><%=cnt %> Comments</h4>
 						
 						<!--  for문 써서 댓글 여러개 쓰게끔 -->
 						
@@ -225,58 +257,82 @@ function viewArea(id){
 	                        <div class="single-comment justify-content-between d-flex" id="free-com">
 	                            <div class="user justify-content-between d-flex">
 	                                <div class="thumb">
-	                                    <img src="/user/img/blog/c1.jpg" alt="">
+	                                    <img src="/user/img/logo/6.png" alt="" id="img1">
 	                                </div>
 	                                <div class="desc">
-	                                    <h5><a href="#">이름 : <%=freeComment.getMember_id() %></a></h5>
-	                                    <p class="date">시간 : <%=freeComment.getRegdate() %> </p>
+	                                    <h5><a href="#"><%=freeComment.getMember().getName() %></a></h5>
+	                                    <p class="date"><%=freeComment.getRegdate() %> </p>
 	                                    <p class="comment">
-	                                        	내용 : <%=freeComment.getContent() %>
+	                                        	<%=freeComment.getContent() %>
 	                                    </p>
 	                                </div>
 	                            </div>
-	                            <div class="reply-btn">
-                                       <a class="btn-reply text-uppercase" onClick="viewArea(<%=i%>)">reply</a> 
-                                </div>
-                                
+	                            <form name="form-team">
+		                            <div class="reply-btn">
+	                                	<a class="btn-reply text-uppercase" onClick="viewArea(<%=i%>)">reply</a>
+	                                </div>
+	                                <div class="reply-btn">
+	                                	<%if(member!=null){ %>
+										<%if(member.getMember_id()==freeboard.getMember().getMember_id()){ %>
+											<input type="hidden" name="freeboard_id" value="<%=freeboard.getFreeboard_id()%>">
+	                                		<a class="btn-reply text-uppercase" onClick="commentDelByTeam(<%=freeComment.getTeam()%>)"> d e l</a>									
+	                                	<%}%>
+	                                	<%}%>
+	                                </div>
+                                </form>                               
 	                        </div>
 	                        
 	                        <div class="comment-form2" id="hiddenComment<%=i%>">
-								<h4>Leave a Comment</h4>
-								<form name="form2" style="align-items: center">
-									<input type="hidden" name="member_id" value="2"/>
+								<h4>Reply</h4>
+								<form name="form<%=i%>" style="align-items: center">
+									<%if(member!=null){ %>
+									<input type="hidden" name="member_id" value="<%=member.getMember_id()%>"/>
+									<%} %>
 									<input type="hidden" name="freeboard_id" value="<%=freeboard.getFreeboard_id()%>"/>
 									<input type="hidden" name="depth" value="2"/>
 									<input type="hidden" name="team" value="<%=freeComment.getTeam()%>"/>
 									<div class="form-group">
 										<textarea class="form-control mb-10" rows="5" name="content" placeholder="Messege" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Messege'" required=""></textarea>
 									</div>
-									<a class="primary-btn text-uppercase" onClick="addComment()">Post Comment</a>	
+									<a class="primary-btn text-uppercase" onClick="addComment(<%=i%>)">Post Reply</a>	
 								</form>
 							</div>
 	                        
+                        
+                        	
 	                    </div>	
 	                    <%} %>
-	                    
+	                    <!-- 댓글의 댓글 시작 -->
 	                    <%if(freeComment.getDepth()==2){ %>
-						<div class="comment-list left-padding">
-	                           <div class="single-comment justify-content-between d-flex">
-	                               <div class="user justify-content-between d-flex">
-	                                   <div class="thumb">
-	                                       <img src="/user/img/blog/c2.jpg" alt="">
-	                                   </div>
-	                                   <div class="desc">
-	                                       <h5><a href="#">이름 : <%=freeComment.getMember_id() %></a></h5>
-	                                       <p class="date">시간 : <%=freeComment.getRegdate() %> </p>
-	                                       <p class="comment">
-	                                           		내용 : <%=freeComment.getContent() %>
-	                                       </p>
-	                                   </div>
-	                               </div>
-	                               
-	                           </div>
-	                       </div>                              
-                        <%} %>   	
+							<div class="comment-list left-padding">
+								<div class="single-comment justify-content-between d-flex">
+								    <div class="user justify-content-between d-flex">
+								        <div class="thumb">
+								        	<i class="fa fa-reply fa-rotate-180" style="font-size:24px"></i>
+								            <img src="/user/img/logo/5.png" alt="" id="img2">
+								        </div>
+								        <div class="desc">
+								            <h5><a href="#"><%=freeComment.getMember().getName() %></a></h5>
+								            <p class="date"><%=freeComment.getRegdate() %> </p>
+								            <p class="comment">
+								                		<%=freeComment.getContent() %>
+								                </p>
+							            </div>
+							        </div>
+							        <%if(member!=null){ %>
+									<%if(member.getMember_id()==freeboard.getMember().getMember_id()){ %> 
+										<form name="form-commentId">                            
+									    <div class="reply-btn">	
+
+											<input type="hidden" name="freeboard_id" value="<%=freeboard.getFreeboard_id()%>">							     	
+	                                		<a class="btn-reply text-uppercase" onClick="commentDelBycommentId(<%=freeComment.getFreeComment_id()%>)">d e l</a>
+		                                </div>
+		                                </form>
+	                                 <%} %>
+	                                 <%} %>
+							    </div>
+							</div>                              
+                        <%} %>   
 							
 							
 						<%}%>
@@ -285,8 +341,10 @@ function viewArea(id){
 					<!-- 댓글 달기 폼 -->
 						<div class="comment-form">
 							<h4>Leave a Comment</h4>
-							<form name="form1">
-								<input type="hidden" name="member_id" value="1"/>
+							<form name="form-main">
+								<%if(member!=null){ %>
+								<input type="hidden" name="member_id" value="<%=member.getMember_id() %>"/>
+								<%} %>
 								<input type="hidden" name="freeboard_id" value="<%=freeboard.getFreeboard_id()%>"/>
 								<input type="hidden" name="depth" value="1"/>
 								<div class="form-group">
@@ -295,8 +353,18 @@ function viewArea(id){
 								<a class="primary-btn text-uppercase" onClick="insertComment()">Post Comment</a>	
 							</form>
 						</div>
-					
-								<a href="/user/freeboards" class="primary-btn text-uppercase" id="listbt">목록으로</a>	
+						<form name="form-edit">
+							<div>
+								<input type="button" class="primary-btn float-right" value="목록으로" onClick="goList()"></button>
+							<%if(member!=null){ %>
+							<%if(member.getMember_id()==freeboard.getMember().getMember_id()){ %>
+								<input type="button" class="primary-btn float-right mr-5" value="삭제" onClick="boardDel(<%=freeboard.getFreeboard_id()%>)"></button>	
+								<input type="button" class="primary-btn float-right mr-5" value="수정" onClick="boardEdit(<%=freeboard.getFreeboard_id()%>)"></button>
+							<%} %>
+							<%} %>
+							</div>
+							
+						</form>
 				</div>
 				
 				
@@ -305,7 +373,7 @@ function viewArea(id){
 			</div>
 		</div>	
 	</section>
-	<!-- End post-content Area -->
+	<!-- 끝 컨텐트 -->
 	
 
 	<!-- start footer Area -->		

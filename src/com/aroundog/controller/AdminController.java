@@ -24,6 +24,7 @@ import com.aroundog.model.domain.FreeBoard;
 import com.aroundog.model.domain.Report;
 import com.aroundog.model.domain.ReportImg;
 import com.aroundog.model.service.AdminService;
+import com.aroundog.model.service.AdoptService;
 import com.aroundog.model.service.AdoptboardService;
 import com.aroundog.model.service.FreeBoardService;
 import com.aroundog.model.service.ReportService;
@@ -39,6 +40,8 @@ public class AdminController {
 	private ReportService reportService;
 	@Autowired
 	private AdoptboardService adoptboardService;
+	@Autowired
+    private AdoptService adoptService;
 	private Pager pager=new Pager();
 	
 
@@ -86,64 +89,59 @@ public class AdminController {
 	
 	
 	//--------------------------지영이 파트 끝----------------------------------------------------------
-	   //Report 관련 ----------------세원이 파트-------------------#
+	//Report 관련 ---------------------------------------------#   
 	   
 	   @RequestMapping(value="/reports",method=RequestMethod.GET)
-	   public ModelAndView reportList() {   
+	   public ModelAndView reportList(HttpServletRequest request) {   
 	      List reportList=reportService.selectAll();//모델앤뷰로 리스트 반환하고.. jsp에서 리스트 받아서 목록 출력!!
-	      System.out.println("Report테이블의 사이즈는"+reportList.size());
+	      pager.init(request, reportList.size());
 	      ModelAndView mav = new ModelAndView("admin/report/index");
+	      mav.addObject("pager",pager);
 	      mav.addObject("reportList", reportList);
 	      return mav;
 	   } 
 	   
 	   @RequestMapping(value="/reports/{report_id}",method=RequestMethod.GET) 
-	   public ModelAndView select(@PathVariable("report_id") int report_id) {
-	      System.out.println("admin/report의 detail 실행함!!");      
-	        ModelAndView mav = new ModelAndView("admin/report/detail"); 
-	        Report report =  reportService.select(report_id); 
-	        System.out.println("report_id는"+report_id);
-	     
-	        mav.addObject("report",report);
-	       
+	   public ModelAndView select(@PathVariable("report_id") int report_id) {   
+	      ModelAndView mav = new ModelAndView("admin/report/detail"); 
+	      Report report =  reportService.select(report_id); 
+	      mav.addObject("report",report); 
 	      return mav;
 	   }
 	   
 	   @RequestMapping(value="/reportsimg/{report_id}",method=RequestMethod.GET)
 	   @ResponseBody
 	   public String selectImg(@PathVariable("report_id") int report_id) {
-	      System.out.println("첨부파일 볼래?"+report_id);
 	      List<ReportImg> imgList = reportService.selectImg(report_id);
-	      System.out.println("이미지 리스트 크기는 " +imgList.size());
-	      
 	      JSONArray jsonArray = new JSONArray();
 	      for(int i = 0;i<imgList.size();i++) {
 	         ReportImg ri = imgList.get(i);
 	         JSONObject obj = new JSONObject();
-	         obj.put("img", ri.getImg());
-	         
+	         obj.put("img", ri.getImg());         
 	         jsonArray.add(obj);
 	      }
-	      System.out.println(jsonArray.toString());
 	      return jsonArray.toString();
 	      
 	   }
 	   
 	   @RequestMapping(value="/reports/check",method=RequestMethod.POST)
 	   public String update(@RequestParam("report_id") int report_id) {
-	      System.out.println("업데이트 할거니? 넘긴 아이디는"+report_id);
 	      reportService.update(report_id);
-	      System.out.println("업데이트 이후");
-	      //return "redirect:/admin/report/index.jsp";
 	      return "redirect:/reports";
 	   }
 	   
 	   //#---------------------------------------------Report 관련 끝
-	@RequestMapping(value="/adopts",method=RequestMethod.GET)
-	public String adoptList() {	
-		
-		return "admin/adopt/index";
-	}
+	   
+	   
+	   //#---------------------------------------------Report 관련 끝
+		@RequestMapping(value="/adopts",method=RequestMethod.GET)
+			public ModelAndView adoptList() {   
+			System.out.println("관리자가 입양신청 목록보기 요청");
+			List adoptList= adoptService.selectAll();
+			ModelAndView mav = new ModelAndView("admin/adopt/index");
+			mav.addObject("adoptList", adoptList);
+			return mav;
+		}
 	//------------------------자유게시판 시작--------------------------------------------------------------
 	
 	//자유게시판 게시물 1건 삭제

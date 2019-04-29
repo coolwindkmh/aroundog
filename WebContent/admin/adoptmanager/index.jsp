@@ -3,9 +3,9 @@
 <%@page import="com.aroundog.model.domain.Admin"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%
-	Admin admin=(Admin)request.getSession().getAttribute("admin");
-	List<Adoptboard> adoptboardList=(List)request.getAttribute("adoptboardList"); 
-	System.out.println("넘어온 adoptboardList : "+adoptboardList.size());
+   Admin admin=(Admin)request.getSession().getAttribute("admin");
+   List<Adoptboard> adoptboardList=(List)request.getAttribute("adoptboardList"); 
+   System.out.println("넘어온 adoptboardList : "+adoptboardList.size());
 %>
 <!DOCTYPE html>
 <html>
@@ -46,18 +46,18 @@ input[type=button]:hover {
 <%@ include file="/admin/inc/pagechange.jsp" %>
 
 function goDetail(){
-	$("form").attr({
-		action:"/admin/adoptmanager/detail",
-		type:"get",
-	});
-	$("form").submit();
+   $("form").attr({
+      action:"/admin/adoptmanager/detail",
+      type:"get",
+   });
+   $("form").submit();
 }
 function goRegist(){
-	$("form").attr({
-		action:"/admin/adopt/type",
-		type:"get",
-	});
-	$("form").submit();
+   $("form").attr({
+      action:"/admin/adoptmanager/type",
+      type:"get",
+   });
+   $("form").submit();
 }
 </script>
 </head>
@@ -67,7 +67,7 @@ function goRegist(){
 <button class="tablink" type="button"><i class="fas fa-user-friends" style="font-size:20px"></i>  회원관리</button> 
 <button class="tablink" type="button"><i class="fas fa-bullhorn" style="font-size:20px"></i>  제보관리</button>
 <button class="tablink" type="button"><i class="far fa-edit" style="font-size:20px"></i>  입양신청관리</button>
-<button class="tablink" type="button"><i class="far fa-comment-alt" 	style="font-size:20px"></i>  게시판관리</button>
+<button class="tablink" type="button"><i class="far fa-comment-alt"    style="font-size:20px"></i>  게시판관리</button>
 <button class="tablink" type="button"><i class="fas fa-dog" style="font-size:20px"></i>  입양게시물관리</button>
 </form>
 <div id="AdoptManager" class="tabcontent">
@@ -86,21 +86,22 @@ function goRegist(){
   <%Adoptboard adoptboard=adoptboardList.get(i); %>
   <%int num=adoptboardList.size(); %>
   <form>
-  	  <input type="hidden" name="adoptboard_id" value="<%=adoptboard.getAdoptboard_id()%>"/>
+       <input type="hidden" name="adoptboard_id" value="<%=adoptboard.getAdoptboard_id()%>"/>
   </form>  
-	  <tr>
-	  	<td><%=num-- %></td>
-	    <td><%=adoptboard.getAdoptdog().getType().getInfo() %></td>
-	    <td><%=adoptboard.getTitle() %></td>
-	    <td><%=adoptboard.getRegdate() %></td> 
-	    <td><input type="button" value="상세보기" onClick="goDetail()"/></td> 
-	  </tr>
+     <tr>
+        <td><%=num-- %></td>
+       <td><%=adoptboard.getAdoptdog().getType().getInfo() %></td>
+       <td><%=adoptboard.getTitle() %></td>
+       <td><%=adoptboard.getRegdate() %></td> 
+       <td>
+          <input type="button" value="상세보기" onClick="goDetail()"/>
+     </tr>
   <%} %>
   
-	  <tr colspan="5">
-	    <td><input type="button" value="글 쓰기" onClick="goRegist()"/></td>
-	  </tr>
-	  
+     <tr colspan="5">
+       <td><input type="button" value="글 쓰기" onClick="goRegist()"/></td>
+     </tr>
+     
 </table> 
 
 <div></div>

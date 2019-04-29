@@ -80,7 +80,7 @@ public class MemberController {
 	public String Login(Member member, HttpServletRequest request) {
 		Member obj=memberService.loginCheck(member);
 		request.getSession().setAttribute("member", obj); //obj가 로그인 성공한 member이다.
-		return "redirect:/user/adopt/adoptboardList";
+		return "redirect:/user/index.jsp";
 	}
 	
 	

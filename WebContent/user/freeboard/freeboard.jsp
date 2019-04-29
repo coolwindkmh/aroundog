@@ -44,48 +44,16 @@
 #lockIcon{
 	margin-left:6px;
 }
+#category-name{
+	display:inline;
+	color:#d94013;
+}
 
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-	  <header id="header" id="home">
-	    <div class="container main-menu">
-	    	<div class="row align-items-center justify-content-between d-flex">
-		      <div id="logo">
-		        <a href="index.html"><img src="/user/img/logo.png" alt="" title="" /></a>
-		      </div>
-		      <nav id="nav-menu-container">
-		        <ul class="nav-menu">
-		          <li class="menu-active"><a href="index.html">Home</a></li>
-		          <li><a href="about.html">About Us</a></li>
-		          <li><a href="cats.html">Cats</a></li>
-		          <li><a href="dogs.html">Dogs</a></li>
-		          <li><a href="volunteer.html">Volunteer</a></li>
-		          <li class="menu-has-children"><a href="">Blog</a>
-		            <ul>
-		              <li><a href="blog-home.html">Blog Home</a></li>
-		              <li><a href="blog-single.html">Blog Single</a></li>
-		            </ul>
-		          </li>						          
-		          <li><a href="contact.html">Contact</a></li>
-		          <li class="menu-has-children"><a href="">Dropdown</a>
-		            <ul>
-		              <li><a href="elements.html">Elements</a></li>	
-		              <li><a href="#">Item</a></li>
-		              <li class="menu-has-children"><a href="">Level 2</a>
-			            <ul>
-			              <li><a href="#">Item 1</a></li>
-			              <li><a href="#">Item 2</a></li>
-			            </ul>
-			          </li>	
-		            </ul>
-		          </li>				              
-		        </ul>
-		      </nav><!-- #nav-menu-container -->		    		
-	    	</div>
-	    </div>
-	  </header><!-- #header -->
+<%@include file="/user/inc/header.jsp" %>
 	  
 	<!-- start banner Area -->
 	<section class="banner-area relative" id="home">	
@@ -147,8 +115,8 @@
 						<%FreeBoard freeBoard=freeBoardList.get(curPos++); %>
 						<div class="table-row">
 							<div class="freeboard_id"><%=num-- %></div>
-							<div class="writer"><%=freeBoard.getMember()%></div>
-							<div class="title"><a href="/user/freeboard/detail/<%=freeBoard.getFreeboard_id() %>" id="aTag"><%=freeBoard.getTitle() %></a>
+							<div class="writer"><%=freeBoard.getMember().getName()%></div>
+							<div class="title" ><div id="category-name">[<%=freeBoard.getCategory() %>]</div>  <a href="/user/freeboard/detail/<%=freeBoard.getFreeboard_id() %>" id="aTag"><%=freeBoard.getTitle() %></a>
 							<%for(int j=0;j<fcList.size();j++){ %>
 							<%FreeComment freeComment=fcList.get(j); %>
 							<%if(freeComment.getFreeboard_id()==freeBoard.getFreeboard_id() && freeComment.getDepth()==1){ 
@@ -156,7 +124,7 @@
 							  } %>
 							<%} %>
 							<%if(cnt !=0) {%>
-									[ <%=cnt %> ]
+									( <%=cnt %> )
 									<%cnt=0; %>
 							<%}else{ %>
 							<%} %>

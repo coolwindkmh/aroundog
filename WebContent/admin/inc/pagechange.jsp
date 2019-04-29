@@ -15,6 +15,9 @@ $(function(){
 	$($("button")[4]).click(function(){
 		adoptManagerList();
 	});
+	$($("button")[5]).click(function(){
+		lostboardList();
+	});
 });
 
 function openPage(pageName,elmnt,color) {
@@ -44,4 +47,7 @@ function freeBoadList(){
 }
 function adoptManagerList(){
 	location.href="/admin/adoptmanagers";
+}
+function lostboardList(){
+   location.href="/admin/lostboardList";
 }

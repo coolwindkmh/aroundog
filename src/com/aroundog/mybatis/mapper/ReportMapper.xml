@@ -11,7 +11,6 @@
    </selectKey>   
    </insert>
    
-   
    <sql id="sql_select">
       select report_id,title,content,regdate,email,phone,lati,longi,checking
       from report

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.aroundog.common.exception.DeleteFailException;
 import com.aroundog.common.exception.EditFailException;
+import com.aroundog.common.exception.RegistFailException;
 import com.aroundog.model.domain.FreeBoard;
 import com.aroundog.model.repository.FreeBoardDAO;
 @Service
@@ -27,20 +28,21 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 	    }	
 	}
 
-	public void insert(FreeBoard freeboard) throws EditFailException{
+	public void insert(FreeBoard freeboard) throws RegistFailException{
 		int result=freeBoardDAO.insert(freeboard);
 		if (result == 0) {
-	         throw new EditFailException("등록 실패!!");
+	         throw new RegistFailException("등록 실패!!");
 	    }	
 	}
 
-	@Override
-	public void update(FreeBoard freeboard) {
-		// TODO Auto-generated method stub
+	public void update(FreeBoard freeboard) throws EditFailException{
+		int result=freeBoardDAO.update(freeboard);
+		if (result == 0) {
+	         throw new EditFailException("자유게시판 수정 실패!!");
+	    }
 		
 	}
 
-	@Override
 	public FreeBoard select(int freeboard_id) {
 		FreeBoard freeboard=freeBoardDAO.select(freeboard_id);
 		return freeboard;
@@ -49,7 +51,7 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 	public void updateHitCnt(int freeboard_id) throws EditFailException{
 		int result=freeBoardDAO.updateHitCnt(freeboard_id);
 		if (result == 0) {
-	         throw new EditFailException("수정 실패!!");
+	         throw new EditFailException("히트 카운트 업데이트 실패!!");
 	    }	
 	}
 

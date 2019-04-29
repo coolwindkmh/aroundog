@@ -11,4 +11,7 @@ public interface FreeCommentService {
 	public void update(FreeComment freeComment);
 	public FreeComment select(int freecomment_id);
 	public void commentAdd(FreeComment freeComment);
+	public void deleteByFreeboardId(int freeboard_id);
+	public void deleteByTeam(int team);
+	public void deleteByCommentId(int freecomment_id);
 }
