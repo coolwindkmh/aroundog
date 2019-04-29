@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%
 	FreeBoard freeboard=(FreeBoard)request.getAttribute("freeboard");
+	out.print(freeboard.getCategory());
 %>
 <!DOCTYPE html>
 <html lang="zxx" class="no-js">
@@ -36,17 +37,19 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(function(){
-	$($("input[type='button']")[0]).click(function(){
+	$($("input[type='button']")[1]).click(function(){
 		edit();
 	});
-	$($("input[type='button']")[1]).click(function(){
+	$($("input[type='button']")[0]).click(function(){
 		location.href="/user/freeboard/detail/<%=freeboard.getFreeboard_id()%>";
 	});
 });
 
 function edit(){
+	if(!confirm("게시물을 수정하시겠습니까?")){
+		return;
+	}
 	setCheck();
-	
 	$("form").attr({
 		action:"/user/freeboard/edit",
 		method:"POST"
@@ -100,11 +103,22 @@ function setCheck(){
 					  	<div class="col-6 mb-0-i">
 					  		<label for="City">카테고리</label>
 					   		<div class="select-option" id="service-select"">
-								<select name="category" value="<%=freeboard.getCategory()%>">
-									<option data-display="카테고리">카테고리</option>
-									<option value="입양질문">입양질문</option>
-									<option value="제보">제보</option>
-									<option value="일반">일반</option>
+								<select name="category">
+									<%if(freeboard.getCategory().equals("일반")){ %>		
+										<option value="일반" selected>일반</option>
+										<option value="입양질문">입양질문</option>
+										<option value="제보">제보</option>									
+									<%} %>			
+									<%if(freeboard.getCategory().equals("입양질문")){ %>		
+										<option value="일반">일반</option>
+										<option value="입양질문" selected>입양질문</option>
+										<option value="제보">제보</option>									
+									<%} %>			
+									<%if(freeboard.getCategory().equals("제보")){ %>		
+										<option value="일반">일반</option>
+										<option value="입양질문">입양질문</option>
+										<option value="제보" selected>제보</option>									
+									<%} %>			
 								</select>
 							</div>	
 					  	</div>
@@ -126,7 +140,11 @@ function setCheck(){
                           <div class="form-group ">
                               <div class="form-check form-check-inline">
                                   <label class="form-check-label">
-                                      <input class="form-check-input" type="checkbox" id="inlineRadio1"> 비공개
+                                  	  <%if(freeboard.getSecret().equals("true")){ %>
+                                      	<input class="form-check-input" type="checkbox" id="inlineRadio1" checked="on"> 비공개
+                                  	  <%}else{ %>
+                                      	<input class="form-check-input" type="checkbox" id="inlineRadio1"> 비공개
+                                  	  <%} %>
                                       <input class="form-check-input" type="hidden" name="secret" id="inlineRadio1">
                                   </label>
                               </div>                                                   
