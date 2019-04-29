@@ -14,4 +14,6 @@ public interface LostBoardDAO {
    public int update(int lostboard_id);
    public LostBoardImg selectThumb(int lostboard_id);
    public List selectAllImg();
+	public int delete(int lostboard_id);
+	public int deleteImg(int lostboard_id);
 }

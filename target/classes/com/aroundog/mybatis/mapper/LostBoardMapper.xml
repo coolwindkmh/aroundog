@@ -38,4 +38,8 @@
    <update id="update" parameterType="int">
       update lostboard set hit = hit+1 where lostboard_id = #{lostboard_id}
    </update>
+   
+   	<delete id="delete" parameterType="int">
+		delete from lostboard where lostboard_id=#{lostboard_id}
+	</delete>
 </mapper>

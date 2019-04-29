@@ -30,4 +30,8 @@
    <select id="selectAll" resultType="LostBoardImg">
       select * from lostboardimg
    </select>
+   
+   	<delete id="delete" parameterType="int"> 
+		delete from lostboardimg where lostboard_id=#{lostboard.lostboard_id}
+	</delete>
 </mapper>
