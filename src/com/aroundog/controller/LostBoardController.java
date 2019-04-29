@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -75,6 +77,13 @@ public class LostBoardController {
       mav.addObject("imgList", imgList);
       return mav;
    }
+   
+	@RequestMapping(value="/user/lostboard/lostboarddetail/delete",method=RequestMethod.GET)
+	public String delete(@RequestParam("lostboard_id") int lostboard_id) {
+		lostBoardService.delete(lostboard_id);
+		lostBoardService.deleteImg(lostboard_id);
+		return "redirect:/user/lostboard/lostboardlist";
+	}
 
    /*
     * @RequestMapping(value = "/lostboard/types", method = RequestMethod.GET)

@@ -18,4 +18,7 @@ public interface LostBoardService {
    public LostBoardImg selectThumb(int lostboard_id);
    public List selectAllImg();
    public List getKeyWordList(List lostBoardList);
+   public void delete(int lostboard_id);
+   public void deleteImg(int lostboard_id);
+   
 }

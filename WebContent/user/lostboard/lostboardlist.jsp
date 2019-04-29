@@ -107,7 +107,7 @@ $(function(){
                         <c:if test="${lbi.lostboard_id == lostBoard.lostboard_id}">
                            <c:set var="thumbName" value="${lbi.img}"/>
                         </c:if>
-                     </c:forEach>
+                     </c:forEach>                
                      <img src="/data/${thumbName}" alt="flag" width="150" height="90">
                      <a href="/user/lostboard/lostboardlist/${lostBoard.lostboard_id}">${lostBoard.title}</a>
                   </div>

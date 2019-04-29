@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.aroundog.common.exception.DeleteFailException;
 import com.aroundog.common.exception.EditFailException;
 import com.aroundog.common.exception.ReportFailException;
 import com.aroundog.common.file.LostBoardImgUploader;
@@ -88,7 +89,9 @@ public class LostBoardServiceImpl implements LostBoardService{
       for(int i=0;i<lostBoardList.size();i++) {
         LostBoard lb = (LostBoard) lostBoardList.get(i);      
         int lb_id = lb.getLostboard_id();
+        System.out.println("lb_id는"+lb_id);
         LostBoardImg lbi=selectThumb(lb_id);
+        System.out.println(lbi);
         lbi.setLostboard_id(lb_id);
         thumbList.add(lbi);
         idList.add(lb_id);
@@ -98,4 +101,20 @@ public class LostBoardServiceImpl implements LostBoardService{
       keyWordList.add(idList);
       return keyWordList;
    }
+   
+	@Override
+	public void delete(int lostboard_id) throws DeleteFailException{
+		int result = lostBoardDAO.delete(lostboard_id);
+		if(result==0) {
+			throw new DeleteFailException("삭제 실패");
+		}		
+	}
+
+	@Override
+	public void deleteImg(int lostboard_id) throws DeleteFailException{
+		int result = lostBoardDAO.deleteImg(lostboard_id);
+		if(result ==0) {
+			throw new DeleteFailException("삭제 실패");
+		}
+	}
 }
