@@ -50,83 +50,84 @@ public class AdoptController {
    
    /*---------------------------------------관리자 관련(입양 업로드 관련)----------------------------------------------------------------*/
    // 관리자: 입양 업로드  게시글 목록 보기
-      @RequestMapping(value="/admin/adoptboardList", method=RequestMethod.GET)
-      public ModelAndView adoptboardselectAll() {
-         System.out.println("관리자가 입양업로드 목록보기");
-         List adoptboardList= adoptboardService.selectAll();
-         ModelAndView mav = new ModelAndView("admin/adoptmanager/index");
-         mav.addObject("adoptboardList", adoptboardList);
-         return mav;
-      }
-      
-      // 관리자: 입양 업로드  게시글 1건  보기
-      @RequestMapping(value="/admin/adoptmanager/detail", method=RequestMethod.GET)
-      public ModelAndView boardSelect(int adoptboard_id) {
-         Adoptboard adoptboard= adoptboardService.select(adoptboard_id);
-         List typeList= typeService.selectAll();
-         ModelAndView mav = new ModelAndView("admin/adoptmanager/detail");
-         mav.addObject("adoptboard", adoptboard);
-         mav.addObject("typeList", typeList);
-         return mav;
-      }
-      
-   // 관리자: 입양 업로드 게시글 쓰기 /트랜잭션 처리 함
-   @RequestMapping(value="/admin/adoptmanager/regist", method=RequestMethod.POST)
-   public String insert(Adoptboard adoptboard, HttpServletRequest request) {
-      //파일 처리
-      MultipartFile myFile=adoptboard.getAdoptdog().getMyFile();
-      String img=myFile.getOriginalFilename();
-      System.out.println("가져온 img의 이름 : "+img);
-      String realPath=request.getServletContext().getRealPath("/data/dogs");
-      System.out.println("이미지가 저장될 realPath : "+realPath);
-      File uploadFile=null;
-      
-      try {
-         uploadFile=new File(realPath+"/"+img); //업로드 될 파일의 경로!!와 이름
-         myFile.transferTo(new File(realPath+"/"+img)); //업로드!
-         img=fileManager.reNameByDate(uploadFile, realPath);
-         System.out.println("새로변경된 파일의 이름 : "+img);
-         if(img!=null) {
-            adoptboard.getAdoptdog().setImg(img);
-            adoptboardService.insert(adoptboard);
-         }
-      } catch (IllegalStateException | IOException e) {
-         e.printStackTrace();
-      }
-      return "redirect:/admin/adoptboardList";
-   }
-
-   // 관리자: 입양 업로드 게시글 수정 /트랜잭션 처리 함
-   @RequestMapping(value="/admin/adoptmanager/update", method=RequestMethod.POST)
-   public String update(Adoptboard adoptboard, HttpServletRequest request) {
-      System.out.println("업로드한 게시글 수정하기"+adoptboard);
-      //파일 처리
-      MultipartFile myFile=adoptboard.getAdoptdog().getMyFile();
-      String img=myFile.getOriginalFilename();
-      
-      String realPath=request.getServletContext().getRealPath("data/dogs");
-      File uploadFile=null;
-      
-      try {
-         uploadFile=new File(realPath+"/"+img); //업로드 될 파일의 경로!!와 이름
-         myFile.transferTo(new File(realPath+"/"+img)); //업로드!
-         img=fileManager.reNameByDate(uploadFile, realPath);
-         if(img!=null) {
-            adoptboard.getAdoptdog().setImg(img);
-            adoptboardService.update(adoptboard);
-         }
-      } catch (IllegalStateException | IOException e) {
-         e.printStackTrace();
-      }
-      return "redirect:/admin/adoptboardList";
+   @RequestMapping(value="/admin/adoptboardList", method=RequestMethod.GET)
+   public ModelAndView adoptboardselectAll() {
+      System.out.println("관리자가 입양업로드 목록보기");
+      List adoptboardList= adoptboardService.selectAll();
+      ModelAndView mav = new ModelAndView("admin/adoptmanager/index");
+      mav.addObject("adoptboardList", adoptboardList);
+      return mav;
    }
    
-   // 관리자: 입양 게시글 삭제 /트랜잭션 처리 함
-   @RequestMapping(value="/admin/adopt/delete", method=RequestMethod.GET)
-   public String delete(int adoptboard_id) {
-      adoptboardService.delete(adoptboard_id);
-      return "redirect:admin/adoptboardList";
+   // 관리자: 입양 업로드  게시글 1건  보기
+   @RequestMapping(value="/admin/adoptmanager/detail", method=RequestMethod.GET)
+   public ModelAndView boardSelect(int adoptboard_id) {
+      Adoptboard adoptboard= adoptboardService.select(adoptboard_id);
+      List typeList= typeService.selectAll();
+      ModelAndView mav = new ModelAndView("admin/adoptmanager/detail");
+      mav.addObject("adoptboard", adoptboard);
+      mav.addObject("typeList", typeList);
+      return mav;
    }
+   
+// 관리자: 입양 업로드 게시글 쓰기 /트랜잭션 처리 함
+@RequestMapping(value="/admin/adoptmanager/regist", method=RequestMethod.POST)
+public String insert(Adoptboard adoptboard, HttpServletRequest request) {
+	   //파일 처리
+   MultipartFile myFile=adoptboard.getAdoptdog().getMyFile();
+   String img=myFile.getOriginalFilename();
+   String realPath=request.getServletContext().getRealPath("/data/dogs");
+   File uploadFile=null;
+   
+   try {
+      uploadFile=new File(realPath+"/"+img); //업로드 될 파일의 경로!!와 이름
+      myFile.transferTo(new File(realPath+"/"+img)); //업로드!
+      img=fileManager.reNameByDate(uploadFile, realPath);
+      
+      if(img!=null) {
+         adoptboard.getAdoptdog().setImg(img);
+         adoptboardService.insert(adoptboard);
+      }
+   } catch (IllegalStateException | IOException e) {
+      e.printStackTrace();
+   }
+   return "redirect:/admin/adoptboardList";
+}
+
+// 관리자: 입양 업로드 게시글 수정 /트랜잭션 처리 함
+@RequestMapping(value="/admin/adoptmanager/update", method=RequestMethod.POST)
+public String update(Adoptboard adoptboard, HttpServletRequest request) {
+	   System.out.println("수정할 게시글 adoptboard_id:"+adoptboard.getAdoptboard_id());
+	   
+	   //파일 처리
+	   MultipartFile myFile=adoptboard.getAdoptdog().getMyFile();
+	   String img=myFile.getOriginalFilename();
+	   
+	   String realPath=request.getServletContext().getRealPath("/data/dogs");
+	   File uploadFile=null;
+	   
+	   try {
+		   uploadFile=new File(realPath+"/"+img); //업로드 될 파일의 경로!!와 이름
+		   myFile.transferTo(new File(realPath+"/"+img)); //업로드!
+		   img=fileManager.reNameByDate(uploadFile, realPath);
+		   if(img!=null) {
+			   adoptboard.getAdoptdog().setImg(img);
+			   adoptboardService.update(adoptboard);
+		   }
+	   } catch (IllegalStateException | IOException e) {
+		   e.printStackTrace();
+	   }
+	   return "redirect:/admin/adoptboardList";
+}
+
+// 관리자: 입양 게시글 삭제 /트랜잭션 처리 함
+@RequestMapping(value="/admin/adoptmanager/delete", method=RequestMethod.GET)
+public String delete(int adoptboard_id) {
+	   System.out.println("삭제할 게시글 adoptboard_id: "+adoptboard_id);
+	   
+   adoptboardService.delete(adoptboard_id);
+   return "redirect:admin/adoptboardList";
+}
    /*------------------------------------------관리자 관련(입양 신청 관련)----------------------------------------------------*/
    // 관리자: 입양요청 게시글 목록 보기
    @RequestMapping(value="/admin/adoptList", method=RequestMethod.GET)
