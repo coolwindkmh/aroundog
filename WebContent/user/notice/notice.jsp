@@ -51,6 +51,21 @@
 .table-head{
 	padding:25px 0px;
 }
+
+.banner-area-min {
+  background: url(../img/aroundog/banner1.jpg) center;
+  background-size: cover;
+}
+
+.banner-area-min .primary-btn {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.banner-area-min .overlay-bg {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
@@ -58,7 +73,7 @@
 <%@include file="/user/inc/header.jsp" %>
 	  
 	<!-- start banner Area -->
-	<section class="banner-area relative" id="home">	
+	<section class="banner-area-min relative" id="home">	
 		<div class="overlay overlay-bg"></div>
 		<div class="container">				
 			<div class="row d-flex align-items-center justify-content-center">
